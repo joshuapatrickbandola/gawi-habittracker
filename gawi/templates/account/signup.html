@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block main %}
+<div class="auth-card">
+
+    <h1>Create your account</h1>
+
+    <p>Start building better habits with Gawi.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div>
+            <label>Email</label>
+            {{ form.email }}
+        </div>
+
+        <div>
+            <label>Password</label>
+            {{ form.password1 }}
+        </div>
+
+        <div>
+            <label>Confirm Password</label>
+            {{ form.password2 }}
+        </div>
+
+        <button type="submit">
+            Sign Up
+        </button>
+    </form>
+
+    <hr>
+
+    <a href="{% provider_login_url 'google' %}">
+        Continue with Google
+    </a>
+
+    <p>
+        Already have an account?
+        <a href="{% url 'account_login' %}">
+            Sign in
+        </a>
+    </p>
+
+</div>
+{% endblock %}
