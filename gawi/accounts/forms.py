@@ -4,6 +4,9 @@ from allauth.account.forms import (
     ResetPasswordKeyForm,
     SignupForm,
 )
+from django import forms
+
+from .models import Profile
 
 
 class CustomLoginForm(LoginForm):
@@ -72,3 +75,34 @@ class CustomResetPasswordKeyForm(ResetPasswordKeyForm):
                 "class": "input",
             }
         )
+
+
+class ProfileSetupForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = [  # noqa: RUF012
+            "display_name",
+            "profile_picture",
+            "bio",
+        ]
+        widgets = {  # noqa: RUF012
+            "display_name": forms.TextInput(
+                attrs={
+                    "placeholder": "Enter your display name",
+                }
+            ),
+            "bio": forms.Textarea(
+                attrs={
+                    "rows": 4,
+                    "placeholder": "Tell us a little about yourself (optional)",
+                }
+            ),
+        }
+
+    def clean_display_name(self):
+        display_name = self.cleaned_data["display_name"].strip()
+
+        if not display_name:
+            raise forms.ValidationError("Display name is required.")
+
+        return display_name

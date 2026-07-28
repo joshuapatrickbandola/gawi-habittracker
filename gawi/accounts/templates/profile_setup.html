@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>Complete Your Profile</h1>
+    <p>Please fill out your profile before continuing.</p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div>
+            <label for="{{ form.display_name.id_for_label }}">
+                Display Name
+            </label>
+            {{ form.display_name }}
+            {{ form.display_name.errors }}
+        </div>
+
+        <br>
+
+        <div>
+            <label for="{{ form.profile_picture.id_for_label }}">
+                Profile Picture (Optional)
+            </label>
+            {{ form.profile_picture }}
+            {{ form.profile_picture.errors }}
+        </div>
+
+        <br>
+
+        <div>
+            <label for="{{ form.bio.id_for_label }}">
+                Bio (Optional)
+            </label>
+            {{ form.bio }}
+            {{ form.bio.errors }}
+        </div>
+
+        <br>
+
+        <button type="submit">Save Profile</button>
+    </form>
+{% endblock %}
