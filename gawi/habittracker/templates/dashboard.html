@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>Dashboard</h1>
+
+<div class="card">
+    <h2>Current Daily Streak</h2>
+
+    <p class="streak">
+        {{ daily_streak }} day{{ daily_streak|pluralize }}
+    </p>
+</div>
+
+<div class="card">
+    <a href="{% url 'habittracker:habit_list' request.user.username %}">Your Habits</a>
+
+    {% if habits %}
+        <ul>
+            {% for habit in habits %}
+                <li>
+                    <strong>{{ habit.name }}</strong>
+                    {% if habit.description %}
+                        <br>
+                        {{ habit.description }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No habits yet.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Recent Accomplishments</h2>
+
+    {% if accomplishments %}
+        <ul>
+            {% for accomplishment in accomplishments %}
+                <li>
+                    {{ accomplishment.date }} -
+                    {{ accomplishment.habit.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No accomplishments yet.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Achievements</h2>
+
+    {% if achievements %}
+        <ul>
+            {% for achievement in achievements %}
+                <li>
+                    {{ achievement.achievement.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No achievements unlocked.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Weekly Report</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Habits Completed</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in weekly_data %}
+            <tr>
+                <td>{{ item.day }}</td>
+                <td>{{ item.completed }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

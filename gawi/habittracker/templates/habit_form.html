@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>Create a New Habit</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <p>
+            <label for="{{ form.name.id_for_label }}">Habit Name:</label><br>
+            {{ form.name }}
+            {{ form.name.errors }}
+        </p>
+
+        <p>
+            <label for="{{ form.category.id_for_label }}">Category:</label><br>
+            {{ form.category }}
+            {{ form.category.errors }}
+        </p>
+
+        <p>
+            <label for="{{ form.goal.id_for_label }}">Goal:</label><br>
+            {{ form.goal }}
+            {{ form.goal.errors }}
+        </p>
+
+        <p>
+            <label for="{{ form.color.id_for_label }}">Color:</label><br>
+            {{ form.color }}
+            {{ form.color.errors }}
+        </p>
+
+        <p>
+            <label for="{{ form.notification_interval.id_for_label }}">
+                Notification Interval:
+            </label><br>
+            {{ form.notification_interval }}
+            {{ form.notification_interval.errors }}
+        </p>
+
+        <button type="submit">Create Habit</button>
+        <a href="{% url 'habittracker:habit_list' request.user.username %}">Cancel</a>
+    </form>
+{% endblock %}

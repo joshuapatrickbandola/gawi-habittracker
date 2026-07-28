@@ -19,7 +19,7 @@ def set_profile(request):
 
         if form.is_valid():
             form.save()
-            return redirect("accounts:home")
+            return redirect("habittracker:dashboard", username=request.user.username)
     else:
         form = ProfileSetupForm(instance=profile)
 

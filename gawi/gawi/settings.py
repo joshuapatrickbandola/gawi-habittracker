@@ -39,6 +39,7 @@ SITE_ID = 1
 
 INSTALLED_APPS = [
     "accounts",
+    "habittracker",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -151,6 +152,8 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+ACCOUNT_LOGIN_REDIRECT_URL = "habittracker:dashboard"
+ACCOUNT_SIGNUP_REDIRECT_URL = "accounts:set_profile"
 
 ACCOUNT_LOGIN_METHODS = {"email"}
 
@@ -171,6 +174,8 @@ ACCOUNT_FORMS = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ACCOUNT_EMAIL_VERIFICATION = "optional"
+
+ACCOUNT_ADAPTER = "accounts.adapter.AccountAdapter"
 
 # Media
 

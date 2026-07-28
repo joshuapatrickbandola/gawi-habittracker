@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script>
+const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+document.querySelectorAll(".habit-checkbox").forEach(checkbox => {
+    checkbox.addEventListener("change", async () => {
+        const response = await fetch(checkbox.dataset.url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken,
+            },
+        });
+
+        const data = await response.json();
+
+        checkbox.checked = data.completed;
+    });
+});
+</script>
+{% endblock %}
+
+{% block main %}
+<h1>My Habits</h1>
+<a href="{% url 'habittracker:habit_create' request.user.username %}">Add a habit</a>
+
+{% csrf_token %}
+
+{% for habit in habits %}
+<div class="habit">
+    <label>
+        <input
+            type="checkbox"
+            class="habit-checkbox"
+            data-url="{% url 'habittracker:habit_complete' habit.pk %}"
+            {% if habit.today_completion and habit.today_completion.0.completed %}checked{% endif %}
+        >
+        {{ habit.name }}
+    </label>
+
+    <p>Category: {{ habit.category.name }}</p>
+</div>
+<hr>
+{% empty %}
+<p>No habits yet.</p>
+{% endfor %}
+
+{% endblock %}
