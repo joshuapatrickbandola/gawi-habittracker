@@ -77,32 +77,19 @@ class CustomResetPasswordKeyForm(ResetPasswordKeyForm):
         )
 
 
-class ProfileSetupForm(forms.ModelForm):
+class DisplayNameForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = [  # noqa: RUF012
-            "display_name",
-            "profile_picture",
-            "bio",
-        ]
-        widgets = {  # noqa: RUF012
-            "display_name": forms.TextInput(
-                attrs={
-                    "placeholder": "Enter your display name",
-                }
-            ),
-            "bio": forms.Textarea(
-                attrs={
-                    "rows": 4,
-                    "placeholder": "Tell us a little about yourself (optional)",
-                }
-            ),
-        }
+        fields = ["display_name"]  # noqa: RUF012
 
-    def clean_display_name(self):
-        display_name = self.cleaned_data["display_name"].strip()
 
-        if not display_name:
-            raise forms.ValidationError("Display name is required.")
+class ProfilePictureForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["profile_picture"]  # noqa: RUF012
 
-        return display_name
+
+class BioForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["bio"]  # noqa: RUF012

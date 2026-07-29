@@ -4,7 +4,9 @@ from .views import *
 
 urlpatterns = [
     path("", home, name="home"),
-    path("accounts/profile/set", set_profile, name="set_profile"),
+    path("accounts/profile/setup/<int:step>/", set_profile, name="set_profile"),
+    path("accounts/profile/post-login/", post_login, name="post_login"),
+    path("accounts/profile/post-signup/", post_signup, name="post_signup"),
     path("accounts/profile/update", update_profile, name="update_profile"),
 ]
 
