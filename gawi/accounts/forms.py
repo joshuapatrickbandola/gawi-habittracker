@@ -16,12 +16,14 @@ class CustomLoginForm(LoginForm):
         self.fields["login"].widget.attrs.update(
             {
                 "class": "input",
+                "placeholder": "",
             }
         )
 
         self.fields["password"].widget.attrs.update(
             {
                 "class": "input",
+                "placeholder": "",
             }
         )
 
@@ -33,18 +35,21 @@ class CustomSignupForm(SignupForm):
         self.fields["email"].widget.attrs.update(
             {
                 "class": "input",
+                "placeholder": "",
             }
         )
 
         self.fields["password1"].widget.attrs.update(
             {
                 "class": "input",
+                "placeholder": "",
             }
         )
 
         self.fields["password2"].widget.attrs.update(
             {
                 "class": "input",
+                "placeholder": "",
             }
         )
 
@@ -56,6 +61,7 @@ class CustomResetPasswordForm(ResetPasswordForm):
         self.fields["email"].widget.attrs.update(
             {
                 "class": "input",
+                "placeholder": "",
             }
         )
 
@@ -67,12 +73,14 @@ class CustomResetPasswordKeyForm(ResetPasswordKeyForm):
         self.fields["password1"].widget.attrs.update(
             {
                 "class": "input",
+                "placeholder": "",
             }
         )
 
         self.fields["password2"].widget.attrs.update(
             {
                 "class": "input",
+                "placeholder": "",
             }
         )
 

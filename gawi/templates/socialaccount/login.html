@@ -1,34 +1,33 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% load i18n %}
 {% block main %}
-<div class="auth-card">
-    <h1>Continue with Google</h1>
-
-    <p>
-        You are about to sign in using your Google account.
-    </p>
-
-    <form method="post">
-        {% csrf_token %}
-
-        {% if redirect_field_value %}
-            <input
-                type="hidden"
-                name="{{ redirect_field_name }}"
-                value="{{ redirect_field_value }}"
-            >
-        {% endif %}
-
-        <button type="submit">
-            Continue with Google
-        </button>
-    </form>
-
-    <p>
+<div class="socialacc-container">
+    <div class="left-scontainer">
+        <img src="{% static 'img/gibbit-point.png' %}" alt="Gibbit Point" class="gibbit-point">
+    </div>
+    <div class="right-scontainer">
         <a href="{% url 'account_login' %}">
-            Cancel
+            <img src="{% static 'img/back-arrow.png' %}" alt="Back">
         </a>
-    </p>
+        <p class="continue-title">Continue with Google</p>
+        <p class="continue-subtitle">You are about to sign in using your Google Account</p>
+        <form method="post">
+            {% csrf_token %}
+
+            {% if redirect_field_value %}
+                <input
+                    type="hidden"
+                    name="{{ redirect_field_name }}"
+                    value="{{ redirect_field_value }}"
+                >
+            {% endif %}
+
+            <button type="submit" class="continue-button">
+                Continue
+            </button>
+        </form>
+    </div>
 </div>
 {% endblock %}

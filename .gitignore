@@ -220,3 +220,8 @@ __marimo__/
 
 # Google OAuth
 *.json
+
+# Media, Fonts, and Static Files
+media/
+fonts/
+static/

@@ -1,50 +1,65 @@
 {% extends "base.html" %}
 {% load socialaccount %}
+{% load static %}
 
 {% block main %}
-<div class="auth-card">
-
-    <h1>Create your account</h1>
-
-    <p>Start building better habits with Gawi.</p>
-
-    <form method="post">
-        {% csrf_token %}
-
-        {{ form.non_field_errors }}
-
-        <div>
-            <label>Email</label>
-            {{ form.email }}
-        </div>
-
-        <div>
-            <label>Password</label>
-            {{ form.password1 }}
-        </div>
-
-        <div>
-            <label>Confirm Password</label>
-            {{ form.password2 }}
-        </div>
-
-        <button type="submit">
-            Sign Up
-        </button>
-    </form>
-
-    <hr>
-
-    <a href="{% provider_login_url 'google' %}">
-        Continue with Google
-    </a>
-
-    <p>
-        Already have an account?
-        <a href="{% url 'account_login' %}">
-            Sign in
+<div class="registration-container">
+    <div class="left-container">
+        <a href="/">
+            <img src="{% static 'img/back-arrow.png' %}" alt="Back">
         </a>
-    </p>
+        <div class="gibbit-img">
+            <img src="{% static 'img/gibbit-sparkle.png' %}" alt="Gibbit Sparkle" class="gibbit-img">
+        </div>
+    </div>
+    <div class="right-container">
+        <img src="{% static 'img/full-logo.png' %}" alt="Gawi Logo" class="registration-logo">
+        <p class="registration-head">Sign Up</p>
+        <form method="post" class="input-fields">
+            {% csrf_token %}
 
+            {{ form.non_field_errors }}
+
+            <div class="field">
+                <p class="field-label">Email</p>
+                {{ form.email }}
+            </div>
+
+            <div class="field">
+                <p class="field-label">Password</p>
+                {{ form.password1 }}
+                <p class="password-rem">Use 8 or more characters with a mix of letters, numbers, and symbols</p>
+            </div>
+
+            <div class="field">
+                <p class="field-label">Re-enter Password</p>
+                {{ form.password2 }}
+            </div>
+
+            <button type="submit" class="registration-button">
+                Sign Up
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>or with</span>
+        </div>
+
+        <a href="{% provider_login_url 'google' %}?next={% url 'accounts:post_login' %}">
+            <div class="google-button">
+                <img src="{% static 'img/google-logo.png'%}" alt="Google Logo" class="google-logo">
+                <p class="green-link g">Continue with Google</p>
+            </div>
+        </a>
+
+        <p class="misc">
+            Already have an account?
+            <a href="{% url 'account_login' %}" class="green-link">
+                Log in here
+            </a>
+        </p>
+
+
+    </div>
 </div>
 {% endblock %}
