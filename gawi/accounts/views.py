@@ -17,6 +17,8 @@ def home(request):
 def set_profile(request, step):
     profile = request.user.profile
 
+    previous_step = step - 1
+
     form_class = FORMS[step]
 
     if request.method == "POST":
@@ -46,6 +48,7 @@ def set_profile(request, step):
         {
             "form": form,
             "step": step,
+            "previous_step": previous_step,
         },
     )
 

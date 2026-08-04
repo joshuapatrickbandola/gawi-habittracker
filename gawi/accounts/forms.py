@@ -89,15 +89,41 @@ class DisplayNameForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ["display_name"]  # noqa: RUF012
+        widgets = {  # noqa: RUF012
+            "display_name": forms.TextInput(
+                attrs={
+                    "class": "profile-input",
+                }
+            )
+        }
+
+
+class CustomFileInput(forms.ClearableFileInput):
+    template_name = "widgets/custom_file_input.html"
 
 
 class ProfilePictureForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ["profile_picture"]  # noqa: RUF012
+        widgets = {  # noqa: RUF012
+            "profile_picture": CustomFileInput(
+                attrs={
+                    "class": "file-input",
+                    "accept": "image/*",
+                }
+            )
+        }
 
 
 class BioForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ["bio"]  # noqa: RUF012
+        widgets = {  # noqa: RUF012
+            "bio": forms.Textarea(
+                attrs={
+                    "class": "profile-text-area",
+                }
+            )
+        }
