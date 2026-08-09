@@ -1,6 +1,7 @@
 import datetime
 from datetime import date, timedelta
 
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Max, Prefetch
 from django.http import JsonResponse
@@ -64,7 +65,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         respective names, status, and streak.
         """
 
-        today = timezone.now().date()
+        today = timezone.localtime(timezone.now()).date()
 
         data = []
 
@@ -258,7 +259,7 @@ class HabitListView(LoginRequiredMixin, ListView):
     context_object_name = "habits"
 
     def get_queryset(self):
-        today = timezone.now().date()
+        today = timezone.localtime(timezone.now()).date()
         heatmap_start = self._heatmap_start_date(today)
 
         return (
@@ -293,7 +294,7 @@ class HabitListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        today = timezone.now().date()
+        today = timezone.localtime(timezone.now()).date()
         heatmap_start = self._heatmap_start_date(today)
 
         for habit in context["habits"]:
@@ -326,7 +327,7 @@ class HabitListView(LoginRequiredMixin, ListView):
 class HabitCompleteView(LoginRequiredMixin, View):
     def post(self, request, pk):
         habit = get_object_or_404(Habit, pk=pk, profile=request.user.profile)
-        today = timezone.now().date()
+        today = timezone.localtime(timezone.now()).date()
 
         accomplishment, _ = HabitAccomplishment.objects.get_or_create(
             habit=habit,
@@ -361,7 +362,30 @@ class HabitCompleteView(LoginRequiredMixin, View):
             )
 
 
-class HabitCreateView(LoginRequiredMixin, CreateView):
+class HabitFormStylingMixin:
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+
+        form.fields["name"].widget.attrs.update(
+            {"class": "habit-name-field", "placeholder": "Habit Name"}
+        )
+        form.fields["category"].widget.attrs.update({"class": "habit-category-field"})
+        form.fields["category"].empty_label = "Category"
+        form.fields["goal"].widget.attrs.update(
+            {
+                "class": "habit-goal-field",
+                "placeholder": "What is your goal by end of the year?",
+            }
+        )
+        form.fields["color"].widget.attrs.update({"class": "habit-color-field"})
+        form.fields["notification_interval"].widget.attrs.update(
+            {"class": "habit-notification"}
+        )
+
+        return form
+
+
+class HabitCreateView(HabitFormStylingMixin, LoginRequiredMixin, CreateView):
     model = Habit
     template_name = "habit_form.html"
 
@@ -373,44 +397,10 @@ class HabitCreateView(LoginRequiredMixin, CreateView):
         "notification_interval",
     ]
 
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-
-        form.fields["name"].widget.attrs.update(
-            {
-                "class": "habit-name-field",
-                "placeholder": "Habit Name",
-            }
-        )
-
-        form.fields["category"].widget.attrs.update(
-            {
-                "class": "habit-category-field",
-            }
-        )
-
-        form.fields["category"].empty_label = "Category"
-
-        form.fields["goal"].widget.attrs.update(
-            {
-                "class": "habit-goal-field",
-                "placeholder": "What is your goal by end of the year?",
-            }
-        )
-
-        form.fields["color"].widget.attrs.update(
-            {
-                "class": "habit-color-field",
-            }
-        )
-
-        form.fields["notification_interval"].widget.attrs.update(
-            {
-                "class": "habit-notification",
-            }
-        )
-
-        return form
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["vapid_public_key"] = settings.VAPID_PUBLIC_KEY
+        return context
 
     def get_success_url(self):
         return reverse_lazy(
@@ -441,10 +431,11 @@ class HabitCreateView(LoginRequiredMixin, CreateView):
         return response
 
 
-class HabitUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class HabitUpdateView(
+    HabitFormStylingMixin, LoginRequiredMixin, UserPassesTestMixin, UpdateView
+):
     model = Habit
     template_name = "habit_form.html"
-
     fields = [  # noqa: RUF012
         "name",
         "category",
@@ -453,13 +444,29 @@ class HabitUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         "notification_interval",
     ]
 
-    success_url = reverse_lazy("habittracker:habit-list")
-
     def test_func(self):
-
         habit = self.get_object()
+        return habit.profile == self.request.user.profile
 
-        return habit.profile.user == self.request.user
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["vapid_public_key"] = settings.VAPID_PUBLIC_KEY
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "habittracker:habit_list", kwargs={"username": self.request.user.username}
+        )
+
+    def form_valid(self, form):
+        custom_category = self.request.POST.get("custom_category", "").strip()
+        if custom_category:
+            form.instance.category = None
+            form.instance.custom_category = custom_category
+        else:
+            form.instance.custom_category = ""
+
+        return super().form_valid(form)
 
 
 class HabitDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

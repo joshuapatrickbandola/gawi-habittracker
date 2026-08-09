@@ -9,7 +9,7 @@ urlpatterns = [
     path("<username>/habits/", views.HabitListView.as_view(), name="habit_list"),
     path("<username>/habit/add/", views.HabitCreateView.as_view(), name="habit_create"),
     path(
-        "<username>/<habit_name>/edit/",
+        "<str:username>/<int:pk>/edit/",
         views.HabitUpdateView.as_view(),
         name="habit_edit",
     ),

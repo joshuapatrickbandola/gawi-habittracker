@@ -8,6 +8,7 @@ urlpatterns = [
     path("accounts/profile/post-login/", post_login, name="post_login"),
     path("accounts/profile/post-signup/", post_signup, name="post_signup"),
     path("accounts/profile/update", update_profile, name="update_profile"),
+    path("push/subscribe/", PushSubscribeView.as_view(), name="push_subscribe"),
 ]
 
 app_name = "accounts"

@@ -39,20 +39,29 @@
         </div>
         {% endfor %}
       </div>
-      <form
-        method="post"
-        action="{% url 'habittracker:habit_delete' habit.pk %}"
-        class="habit-delete-form"
-        onsubmit="return confirm('Delete &quot;{{ habit.name|escapejs }}&quot;? This can\'t be undone.');"
-      >
-        {% csrf_token %}
-        <button type="submit" class="habit-delete-btn" aria-label="Delete {{ habit.name }}">
-          <i class="icon ph-bold ph-trash"></i>
-        </button>
-      </form>
+      <div class="misc-actions">
+        <form
+          method="post"
+          action="{% url 'habittracker:habit_delete' habit.pk %}"
+          class="habit-delete-form"
+          onsubmit="return confirm('Delete &quot;{{ habit.name|escapejs }}&quot;? This can\'t be undone.');"
+        >
+          {% csrf_token %}
+          <button type="submit" class="habit-delete-btn" aria-label="Delete {{ habit.name }}">
+            <i class="icon ph-bold ph-trash"></i>
+          </button>
+        </form>
+        <a href="{% url 'habittracker:habit_edit' user.username habit.pk %}" class="edit">
+          <i class="icon ph-bold ph-note-pencil"></i>
+        </a>
+      </div>
+      
     </div>
     {% empty %}
-    <p>No habits yet.</p>
+    <p class="no-habits-text">No habits yet.</p>
+    <p class="no-habits-text">No habits yet.</p>
+    <p class="no-habits-text">No habits yet.</p>
+    <p class="no-habits-text">No habits yet.</p>
     {% endfor %}
   </div>
 </div>

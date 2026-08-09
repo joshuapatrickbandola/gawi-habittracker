@@ -49,6 +49,7 @@ class Habit(models.Model):
         ],
         help_text="Notify the user every X hours (1-24).",
     )
+    last_notified_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_archived = models.BooleanField(default=False)

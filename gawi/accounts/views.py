@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import redirect, render
 
-from .forms import *
+from .forms import BioForm, DisplayNameForm, ProfilePictureForm
 
 FORMS = {
     1: DisplayNameForm,
@@ -14,7 +15,10 @@ def home(request):
     return render(request, "home.html")
 
 
+@login_required
 def set_profile(request, step):
+    if step not in FORMS:
+        raise Http404("Invalid setup step.")
     profile = request.user.profile
 
     previous_step = step - 1
@@ -53,6 +57,7 @@ def set_profile(request, step):
     )
 
 
+@login_required
 def update_profile(request):
     return render(request, "profile_update.html")
 
@@ -81,3 +86,31 @@ def post_signup(request):
         )
 
     return redirect("accounts:set_profile", step=1)
+
+
+import json
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
+from django.views import View
+
+from .models import PushSubscription
+
+
+class PushSubscribeView(LoginRequiredMixin, View):
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            endpoint = data["endpoint"]
+            keys = data["keys"]
+            p256dh = keys["p256dh"]
+            auth = keys["auth"]
+        except (json.JSONDecodeError, KeyError, TypeError):
+            return JsonResponse({"error": "Invalid subscription payload."}, status=400)
+
+        PushSubscription.objects.update_or_create(
+            profile=request.user.profile,
+            endpoint=endpoint,
+            defaults={"p256dh": p256dh, "auth": auth},
+        )
+        return JsonResponse({"status": "subscribed"})

@@ -129,7 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Manila"
 
 USE_I18N = True
 
@@ -183,3 +183,9 @@ SOCIALACCOUNT_ADAPTER = "accounts.adapter.CustomSocialAccountAdapter"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Web Push
+
+VAPID_PUBLIC_KEY = os.getenv("VAPID_PUBLIC_KEY")
+VAPID_PRIVATE_KEY = os.getenv("VAPID_PRIVATE_KEY")
+VAPID_ADMIN_EMAIL = "joshua.patrick.bandola.cw@gmail.com"

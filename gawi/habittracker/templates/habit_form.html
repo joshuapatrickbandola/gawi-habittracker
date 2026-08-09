@@ -29,6 +29,7 @@
                 name="custom_category"
                 id="custom-category"
                 placeholder="Enter your category"
+                value="{{ form.instance.custom_category }}"
               />
             </div>
             {{ form.category }} {{ form.category.errors }}
@@ -144,4 +145,21 @@
 
 {% block form_script %}
 <script src="{% static 'js/form.js' %}"></script>
+<script src="{% static 'js/push-setup.js' %}"></script>
+<script>
+document.querySelector(".habit-form").addEventListener("submit", async (e) => {
+    const intervalField = document.getElementById("id_notification_interval");
+    const interval = parseInt(intervalField?.value || "0", 10);
+
+    if (interval > 0 && "Notification" in window && Notification.permission === "default") {
+        e.preventDefault();
+        await setupPushNotifications(
+            "{{ vapid_public_key }}",
+            "{% url 'accounts:push_subscribe' %}",
+            "{{ csrf_token }}"
+        );
+        e.target.submit();
+    }
+});
+</script>
 {% endblock %}
