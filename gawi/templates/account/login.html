@@ -1,72 +1,55 @@
-{% extends "base.html" %}
-{% load socialaccount %}
-{% load static %}
-
-{% block main %}
+{% extends "base.html" %} {% load socialaccount %} {% load static %} {% block main %}
 <div class="registration-container">
-    <div class="left-container">
-        <a href="/">
-            <img src="{% static 'img/back-arrow.png' %}" alt="Back">
-        </a>
-        <div class="gibbit-img">
-            <img src="{% static 'img/gibbit-wave.png' %}" alt="Gibbit Wave" class="gibbit-img">
-        </div>
+  <div class="left-container">
+    <a href="/">
+      <img src="{% static 'img/back-arrow.png' %}" alt="Back" />
+    </a>
+    <div class="gibbit-img">
+      <img src="{% static 'img/gibbit-wave.png' %}" alt="Gibbit Wave" class="gibbit-img" />
     </div>
-    <div class="right-container">
-        <img src="{% static 'img/full-logo.png' %}" alt="Gawi Logo" class="registration-logo">
-        <p class="registration-head">Login</p>
-        <form method="post" class="input-fields">
-            {% csrf_token %}
+  </div>
+  <div class="right-container">
+    <img src="{% static 'img/full-logo.png' %}" alt="Gawi Logo" class="registration-logo" />
+    <p class="registration-head">Login</p>
+    <form method="post" class="input-fields">
+      {% csrf_token %} {{ form.non_field_errors }}
 
-            {{ form.non_field_errors }}
+      <div class="field">
+        <p class="field-label">Email</p>
+        {{ form.login }}
+      </div>
 
-            <div class="field">
-                <p class="field-label">Email</p>
-                {{ form.login }}
-            </div>
+      <div class="field">
+        <p class="field-label">Password</p>
+        {{ form.password }}
+      </div>
 
-            <div class="field">
-                <p class="field-label">Password</p>
-                {{ form.password }}
-            </div>
-
-            <div class="login-addtl">
-                <div class="login-checkbox">
-                    {{ form.remember }}
-                    <label class="login-label">
-                        Remember me
-                    </label>
-                </div>
-                <a href="{% url 'account_reset_password' %}" class="green-link">
-                    Forgot password?
-                </a>
-            </div>
-
-            <button type="submit" class="registration-button">
-                Login
-            </button>
-
-        </form>
-
-        <div class="divider">
-            <span>or with</span>
+      <div class="login-addtl">
+        <div class="login-checkbox">
+          {{ form.remember }}
+          <label class="login-label"> Remember me </label>
         </div>
+        <a href="{% url 'account_reset_password' %}" class="green-link"> Forgot password? </a>
+      </div>
 
-        <a href="{% provider_login_url 'google' %}?next={% url 'accounts:post_login' %}">
-            <div class="google-button">
-                <img src="{% static 'img/google-logo.png'%}" alt="Google Logo" class="google-logo">
-                <p class="green-link g">Continue with Google</p>
-            </div>
-        </a>
+      <button type="submit" class="registration-button">Login</button>
+    </form>
 
-        <p class="misc">
-            Don't have an account?
-            <a href="{% url 'account_signup' %}" class="green-link">
-                Sign up here
-            </a>
-        </p>
-
+    <div class="divider">
+      <span>or with</span>
     </div>
 
+    <a href="{% provider_login_url 'google' %}?next={% url 'accounts:post_login' %}">
+      <div class="google-button">
+        <img src="{% static 'img/google-logo.png'%}" alt="Google Logo" class="google-logo" />
+        <p class="green-link g">Continue with Google</p>
+      </div>
+    </a>
+
+    <p class="misc">
+      Don't have an account?
+      <a href="{% url 'account_signup' %}" class="green-link"> Sign up here </a>
+    </p>
+  </div>
 </div>
 {% endblock %}

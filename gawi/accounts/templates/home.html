@@ -1,75 +1,84 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block main %}
+{% extends "base.html" %} {% load static %} {% block main %}
 <div class="logo-buttons-container">
-    <img src="{% static 'img/full-logo.png' %}" alt="Gawi Logo" class="logo">
-    <div class="home-register-buttons">
+  <img src="{% static 'img/full-logo.png' %}" alt="Gawi Logo" class="logo" />
+  <div class="home-register-buttons">
     {% if user.is_authenticated %}
-        <a href="{% url 'habittracker:dashboard' request.user.username %}">
-            <div class="home-view-dashboard">
-                <p>Dashboard</p>
-            </div>
-        </a>
-        <form method="post" action="{% url 'account_logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="home-logout-button">Log out</button>
-        </form>
+    <a href="{% url 'habittracker:dashboard' request.user.username %}">
+      <div class="home-view-dashboard">
+        <p>Dashboard</p>
+      </div>
+    </a>
+    <form method="post" action="{% url 'account_logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="home-logout-button">Log out</button>
+    </form>
     {% else %}
-        <a href="{% url 'account_login' %}">
-            <div class="home-login-button">
-                <p>Login</p>
-            </div>
-        </a>
-        <a href="{% url 'account_signup' %}">
-            <div class="home-signup-button">
-                <p>Get Started</p>
-            </div>
-        </a>
+    <a href="{% url 'account_login' %}">
+      <div class="home-login-button">
+        <p>Login</p>
+      </div>
+    </a>
+    <a href="{% url 'account_signup' %}">
+      <div class="home-signup-button">
+        <p>Get Started</p>
+      </div>
+    </a>
     {% endif %}
-    </div>
+  </div>
 </div>
 <div class="hero-section">
-    <div class="headline">
-        <div class="main-headline">
-            <p>Gibbit! Hop into better habits with Gawi!</p>
-        </div>
-        <div class="sub-headline">
-            <p>Gibbit a try! Gawi is a habit tracking app that helps users build and maintain positive routines.</p>
-        </div>
+  <div class="headline">
+    <div class="main-headline">
+      <p>Gibbit! Hop into better habits with Gawi!</p>
     </div>
-    <div class="img-container">
-        <img src="{% static 'img/gibbit-neutral.png' %}" alt="Gibbit" class="welcome-gibbit">
+    <div class="sub-headline">
+      <p>
+        Gibbit a try! Gawi is a habit tracking app that helps users build and maintain positive
+        routines.
+      </p>
     </div>
+  </div>
+  <div class="img-container">
+    <img src="{% static 'img/gibbit-neutral.png' %}" alt="Gibbit" class="welcome-gibbit" />
+  </div>
 </div>
 <div class="features-section">
-    <div class="feature-text">
-        <p class="title">Gawi Features</p>
-        <p class="subtitle">
-            Gawi lets users create habits, set reminders, track daily streaks, view progress on a calendar, earn achievement badges, and receive weekly progress reports.
-        </p>
+  <div class="feature-text">
+    <p class="title">Gawi Features</p>
+    <p class="subtitle">
+      Gawi lets users create habits, set reminders, track daily streaks, view progress on a
+      calendar, earn achievement badges, and receive weekly progress reports.
+    </p>
+  </div>
+  <div class="features">
+    <div class="feature">
+      <img src="{% static 'img/gibbit-streak.png' %}" alt="Gibbit Streak" class="gibbit-features" />
+      <p class="feature-subtext">Daily Streaks</p>
     </div>
-    <div class="features">
-        <div class="feature">
-            <img src="{% static 'img/gibbit-streak.png' %}" alt="Gibbit Streak" class="gibbit-features">
-            <p class="feature-subtext">Daily Streaks</p>
-        </div>
-        <div class="feature">
-            <img src="{% static 'img/gibbit-alarm.png' %}" alt="Gibbit Alarm" class="gibbit-features">
-            <p class="feature-subtext">Smart Reminders</p>
-        </div>
-        <div class="feature">
-            <img src="{% static 'img/gibbit-analytics.png' %}" alt="Gibbit Analytics" class="gibbit-features">
-            <p class="feature-subtext">Analytics Report</p>
-        </div>
-        <div class="feature">
-            <img src="{% static 'img/gibbit-achievements.png' %}" alt="Gibbit Achievement" class="gibbit-features-exp">
-            <p class="feature-subtext-exp">Achievement Badges</p>
-        </div>
+    <div class="feature">
+      <img src="{% static 'img/gibbit-alarm.png' %}" alt="Gibbit Alarm" class="gibbit-features" />
+      <p class="feature-subtext">Smart Reminders</p>
     </div>
+    <div class="feature">
+      <img
+        src="{% static 'img/gibbit-analytics.png' %}"
+        alt="Gibbit Analytics"
+        class="gibbit-features"
+      />
+      <p class="feature-subtext">Analytics Report</p>
+    </div>
+    <div class="feature">
+      <img
+        src="{% static 'img/gibbit-achievements.png' %}"
+        alt="Gibbit Achievement"
+        class="gibbit-features-exp"
+      />
+      <p class="feature-subtext-exp">Achievement Badges</p>
+    </div>
+  </div>
 </div>
 <div class="quote-section">
-    <p class="quote">One small hop today is a giant leap toward your goals!</p>
-    <img src="{% static 'img/gibbit-jump.png' %}" alt="Gibbit Jump" class="gibbit-jump">
+  <p class="quote">One small hop today is a giant leap toward your goals!</p>
+  <img src="{% static 'img/gibbit-jump.png' %}" alt="Gibbit Jump" class="gibbit-jump" />
 </div>
 {% endblock %}

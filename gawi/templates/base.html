@@ -1,10 +1,10 @@
 {% load static %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
       type="text/css"
@@ -12,27 +12,18 @@
     />
     <title>Gawi Habit Tracker</title>
 
-    <link rel="icon" type="image/png" href="{% static 'img/logo-icon.png' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
+    <link rel="icon" type="image/png" href="{% static 'img/logo-icon.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
     <div class="page-container">
-        <div class="container">
-            {% block sidebar %}{% endblock %}
-            {% block body %}{% endblock %}
-        </div>
-        
-        <header>
-            {% block header %}{% endblock %}
-        </header>
-        <main>
-            {% block main %}{% endblock %}
-        </main>
-        <footer>
-            {% block footer %}{% endblock %}
-        </footer>
+      <div class="container">{% block sidebar %}{% endblock %} {% block body %}{% endblock %}</div>
+
+      <header>{% block header %}{% endblock %}</header>
+      <main>{% block main %}{% endblock %}</main>
+      <footer>{% block footer %}{% endblock %}</footer>
     </div>
-</body>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-{% block script %}{% endblock %}
+  </body>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  {% block script %}{% endblock %}
 </html>
