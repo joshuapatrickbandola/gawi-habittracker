@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidebar %}
+<div class="sidebar-container">
+    <div class="sidebar">
+        <div class="menu-btn">
+            <i class="ph-bold ph-caret-left"></i>
+        </div>
+        <div class="head">
+            <div class="user-img">
+                <img src="{{ user.profile.avatar_url }}" alt="Profile Image">
+            </div>
+            <div class="user-details">
+                <p class="user-name">{{ user.profile.display_name }}</p>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="menu">
+                <p class="title-bar">Main</p>
+                <ul class="main-menu">
+                    <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        <a href="{% url 'habittracker:dashboard' request.user.username %}">
+                            <i class="icon ph-bold ph-house"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="icon ph-bold ph-list"></i>
+                            <span class="text">Habits</span>
+                            <i class="arrow ph-bold ph-caret-down"></i>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="{% url 'habittracker:habit_list' request.user.username %}">
+                                    <span class="text">Habit List</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'habittracker:habit_create' request.user.username %}">
+                                    <span class="text">Add Habits</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="title-bar">Settings</p>
+                <ul class="main-menu">
+                    <li>
+                        <a href="#">
+                            <i class="icon ph-bold ph-gear"></i>
+                            <span class="text">Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="title-bar">Account</p>
+                <ul>
+                    <li>
+                        <a href="#">
+                            <i class="icon ph-bold ph-user-circle"></i>
+                            <span class="text">Profile</span>
+                        </a>
+                        <a href="{% url 'account_logout' %}">
+                            <i class="icon ph-bold ph-sign-out"></i>
+                            <span class="text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/sidebar.js' %}"></script>
+{% block dashboard_script %}{% endblock %}
+{% block form_script %}{% endblock %}
+{% endblock %}

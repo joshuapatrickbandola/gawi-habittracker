@@ -304,6 +304,45 @@ class HabitCreateView(LoginRequiredMixin, CreateView):
         "notification_interval",
     ]
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+
+        form.fields["name"].widget.attrs.update(
+            {
+                "class": "habit-name-field",
+                "placeholder": "Habit Name",
+            }
+        )
+
+        form.fields["category"].widget.attrs.update(
+            {
+                "class": "habit-category-field",
+            }
+        )
+
+        form.fields["category"].empty_label = "Category"
+
+        form.fields["goal"].widget.attrs.update(
+            {
+                "class": "habit-goal-field",
+                "placeholder": "What is your goal by end of the year?",
+            }
+        )
+
+        form.fields["color"].widget.attrs.update(
+            {
+                "class": "habit-color-field",
+            }
+        )
+
+        form.fields["notification_interval"].widget.attrs.update(
+            {
+                "class": "habit-notification",
+            }
+        )
+
+        return form
+
     def get_success_url(self):
         return reverse_lazy(
             "habittracker:habit_list",
@@ -315,6 +354,12 @@ class HabitCreateView(LoginRequiredMixin, CreateView):
         profile = self.request.user.profile
 
         form.instance.profile = profile
+
+        custom_category = self.request.POST.get("custom_category", "").strip()
+
+        if custom_category:
+            form.instance.category = None
+            form.instance.custom_category = custom_category
 
         response = super().form_valid(form)
 

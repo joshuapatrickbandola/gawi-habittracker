@@ -24,7 +24,7 @@ class Habit(models.Model):
         on_delete=models.CASCADE,
         related_name="habits",
     )
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=16)
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
@@ -32,13 +32,16 @@ class Habit(models.Model):
         blank=True,
         related_name="habits",
     )
+    custom_category = models.CharField(
+        max_length=24,
+        blank=True,
+        default="",
+    )
     color = models.CharField(
         max_length=7,
-        default="#36E91F",
-        help_text="Hex color code (e.g. #36E91F)",
     )
     goal = models.TextField(blank=True)
-    notification_interval = models.IntegerField(
+    notification_interval = models.PositiveIntegerField(
         default=0,
         validators=[
             MinValueValidator(0),

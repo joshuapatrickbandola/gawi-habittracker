@@ -1,44 +1,185 @@
-{% extends "base.html" %}
+{% extends "main.html" %}
+{% load static %}
 
-{% block main %}
-<h1>Create a New Habit</h1>
+{% block body %}
+<div class="habit-form-container">
+    <div class="habit-form-box">
+        <form method="post" class="habit-form">
+            {% csrf_token %}
+            <p class="habit-name-form">
+                {{ form.name }}
+                {{ form.name.errors }}
+            </p>
+            <div class="selections-form">
+                <div class="selection category">
+                    <div class="custom-select" id="category-select">
+                        <button type="button" class="custom-select-button">
+                            <span class="selected-category">Category</span>
+                            <i class="select-arrow ph-bold ph-caret-down"></i>
+                        </button>
+                        <div class="custom-select-options">
+                            <div class="custom-option" data-value="">
+                                Category
+                            </div>
 
-    <form method="post">
-        {% csrf_token %}
+                            {% for category in form.category.field.queryset %}
+                                <div
+                                    class="custom-option"
+                                    data-value="{{ category.pk }}"
+                                >
+                                    {{ category.name }}
+                                </div>
+                            {% endfor %}
 
-        <p>
-            <label for="{{ form.name.id_for_label }}">Habit Name:</label><br>
-            {{ form.name }}
-            {{ form.name.errors }}
-        </p>
+                            <div class="custom-option custom-option-create" data-value="custom">
+                                Create custom category
+                            </div>
+                        </div>
+                        <div class="custom-category-input">
+                            <input
+                                type="text"
+                                name="custom_category"
+                                id="custom-category"
+                                placeholder="Enter your category"
+                            >
+                        </div>
+                        {{ form.category }}
+                        {{ form.category.errors }}
+                    </div>
+                </div>
+                <div class="selection color">
+                    <div class="color-palette">
+                        <button
+                            type="button"
+                            class="color-option"
+                            data-color="#EF4444"
+                            style="--color: #EF4444;"
+                            aria-label="Red"
+                        ></button>
 
-        <p>
-            <label for="{{ form.category.id_for_label }}">Category:</label><br>
-            {{ form.category }}
-            {{ form.category.errors }}
-        </p>
+                        <button
+                            type="button"
+                            class="color-option"
+                            data-color="#F97316"
+                            style="--color: #F97316;"
+                            aria-label="Orange"
+                        ></button>
 
-        <p>
-            <label for="{{ form.goal.id_for_label }}">Goal:</label><br>
-            {{ form.goal }}
-            {{ form.goal.errors }}
-        </p>
+                        <button
+                            type="button"
+                            class="color-option"
+                            data-color="#EAB308"
+                            style="--color: #EAB308;"
+                            aria-label="Yellow"
+                        ></button>
 
-        <p>
-            <label for="{{ form.color.id_for_label }}">Color:</label><br>
-            {{ form.color }}
-            {{ form.color.errors }}
-        </p>
+                        <button
+                            type="button"
+                            class="color-option"
+                            data-color="#22C55E"
+                            style="--color: #22C55E;"
+                            aria-label="Green"
+                        ></button>
 
-        <p>
-            <label for="{{ form.notification_interval.id_for_label }}">
-                Notification Interval:
-            </label><br>
-            {{ form.notification_interval }}
-            {{ form.notification_interval.errors }}
-        </p>
+                        <button
+                            type="button"
+                            class="color-option"
+                            data-color="#06B6D4"
+                            style="--color: #06B6D4;"
+                            aria-label="Cyan"
+                        ></button>
 
-        <button type="submit">Create Habit</button>
-        <a href="{% url 'habittracker:habit_list' request.user.username %}">Cancel</a>
-    </form>
+                        <button
+                            type="button"
+                            class="color-option"
+                            data-color="#3B82F6"
+                            style="--color: #3B82F6;"
+                            aria-label="Blue"
+                        ></button>
+
+                        <button
+                            type="button"
+                            class="color-option"
+                            data-color="#8B5CF6"
+                            style="--color: #8B5CF6;"
+                            aria-label="Purple"
+                        ></button>
+
+                        <button
+                            type="button"
+                            class="color-option"
+                            data-color="#EC4899"
+                            style="--color: #EC4899;"
+                            aria-label="Pink"
+                        ></button>
+
+                        <label class="custom-color">
+                            <input type="color" id="custom-color-picker">
+                            <span class="custom-color-circle"></span>
+                        </label>
+                    </div>
+
+                    {{ form.color }}
+
+                    {{ form.color.errors }}
+                </div>
+            </div>
+            <div class="goal-notification">
+                <div class="goal-box">
+                    {{ form.goal }}
+                    {{ form.goal.errors }}
+                </div>
+                <div class="selection notification">
+                    <div class="notification-time">
+                        <i class="icon ph-bold ph-bell-ringing"></i>
+                        <p>Remind me every</p>
+                    </div>
+
+                    <div class="interval-picker" id="interval-picker">
+
+                        <div class="interval-highlight"></div>
+
+                        <div class="interval-options">
+                            <div class="interval-option" data-value="0">
+                                No notification
+                            </div>
+
+                            {% for hour in "123456789" %}
+                                <div class="interval-option" data-value="{{ hour }}">
+                                    {{ hour }} hour{{ hour|pluralize }}
+                                </div>
+                            {% endfor %}
+
+                            <div class="interval-option" data-value="10">10 hours</div>
+                            <div class="interval-option" data-value="11">11 hours</div>
+                            <div class="interval-option" data-value="12">12 hours</div>
+                            <div class="interval-option" data-value="13">13 hours</div>
+                            <div class="interval-option" data-value="14">14 hours</div>
+                            <div class="interval-option" data-value="15">15 hours</div>
+                            <div class="interval-option" data-value="16">16 hours</div>
+                            <div class="interval-option" data-value="17">17 hours</div>
+                            <div class="interval-option" data-value="18">18 hours</div>
+                            <div class="interval-option" data-value="19">19 hours</div>
+                            <div class="interval-option" data-value="20">20 hours</div>
+                            <div class="interval-option" data-value="21">21 hours</div>
+                            <div class="interval-option" data-value="22">22 hours</div>
+                            <div class="interval-option" data-value="23">23 hours</div>
+                            <div class="interval-option" data-value="24">24 hours</div>
+                        </div>
+
+                    </div>
+
+                    {{ form.notification_interval }}
+                    {{ form.notification_interval.errors }}
+                </div>
+            </div>
+            <button type="submit" class="habit-form-done">Done</button>
+        </form>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block form_script %}
+<script src="{% static 'js/form.js' %}"></script>
 {% endblock %}

@@ -31,3 +31,6 @@ class Profile(models.Model):
             return self.google_picture
 
         return static("img/default-avatar.png")
+
+    def __str__(self):
+        return self.display_name
