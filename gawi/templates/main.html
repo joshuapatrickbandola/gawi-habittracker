@@ -1,4 +1,7 @@
-{% extends "base.html" %} {% load static %} {% block sidebar %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidebar %}
 <div class="sidebar-container">
   <div class="sidebar">
     <div class="menu-btn">
@@ -70,5 +73,7 @@
 </div>
 {% endblock %} {% block script %}
 <script src="{% static 'js/sidebar.js' %}"></script>
-{% block dashboard_script %}{% endblock %} {% block form_script %}{% endblock %} {% block
-list_script %}{% endblock %} {% endblock %}
+{% block dashboard_script %}{% endblock %}
+{% block form_script %}{% endblock %}
+{% block list_script %}{% endblock %}
+{% endblock %}

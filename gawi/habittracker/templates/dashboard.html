@@ -1,4 +1,7 @@
-{% extends "main.html" %} {% load static %} {% block body %}
+{% extends "main.html" %}
+{% load static %}
+
+{% block body %}
 <div class="dashboard-container">
   <div class="dashbox streak" style="grid-area: box-1">
     {% if profile_streak == 0 %}
@@ -140,8 +143,11 @@
     <div class="heatmap-tooltip" id="heatmapTooltip"></div>
   </div>
 </div>
-{{ weekly_report|json_script:"weekly-data" }} {{ habit_count|json_script:"habit-count" }} {%
-endblock %} {% block dashboard_script %}
+{{ weekly_report|json_script:"weekly-data" }}
+{{ habit_count|json_script:"habit-count" }} 
+{% endblock %}
+
+{% block dashboard_script %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}

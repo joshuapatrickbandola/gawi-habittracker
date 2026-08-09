@@ -1,4 +1,8 @@
-{% extends "main.html" %} {% load static %} {% block body %} {% csrf_token %}
+{% extends "main.html" %}
+{% load static %}
+
+{% block body %}
+{% csrf_token %}
 <div class="list-container">
   <div class="list-box">
     {% for habit in habits %}
@@ -9,20 +13,18 @@
           type="checkbox"
           class="habit-checkbox"
           data-url="{% url 'habittracker:habit_complete' habit.pk %}"
-          {%
-          if
-          habit.today_completion
-          and
-          habit.today_completion.0.completed
-          %}checked{%
-          endif
-          %}
+          {% if habit.today_completion and habit.today_completion.0.completed %}checked{% endif %}
         />
       </div>
       <div class="category-name">
         <p>
-          {% if habit.custom_category %} {{ habit.custom_category }} {% elif habit.category %} {{
-          habit.category.name }} {% else %} Uncategorized {% endif %}
+          {% if habit.custom_category %}
+          {{ habit.custom_category }}
+          {% elif habit.category %}
+          {{habit.category.name }}
+          {% else %}
+          Uncategorized
+          {% endif %}
         </p>
       </div>
       <div class="tracker-grid" style="--habit-color: {{ habit.color }};">
@@ -31,13 +33,7 @@
           {% for day in week %}
           <div
             class="tracker-day{% if day.completed %} completed{% endif %}{% if not day.date %} empty{% endif %}"
-            {%
-            if
-            day.date
-            %}title="{{ day.date }}"
-            {%
-            endif
-            %}
+            {% if day.date %}title="{{ day.date }}" {% endif %}
           ></div>
           {% endfor %}
         </div>
@@ -60,6 +56,8 @@
     {% endfor %}
   </div>
 </div>
-{% endblock %} {% block list_script %}
+{% endblock %}
+
+{% block list_script %}
 <script src="{% static 'js/list.js' %}"></script>
 {% endblock %}

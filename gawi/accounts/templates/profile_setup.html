@@ -1,4 +1,7 @@
-{% extends "base.html" %} {% load static %} {% block main %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
 <div class="profile-supercontainer">
   <div class="profile-container">
     <div class="stepper-progress">
@@ -335,6 +338,8 @@
     </form>
   </div>
 </div>
-{% endblock %} {% block script %}
+{% endblock %}
+
+{% block script %}
 <script src="{% static 'js/profile-setting.js' %}"></script>
 {% endblock %}

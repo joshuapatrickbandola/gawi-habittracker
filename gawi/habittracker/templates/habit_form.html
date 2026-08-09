@@ -1,4 +1,7 @@
-{% extends "main.html" %} {% load static %} {% block body %}
+{% extends "main.html" %}
+{% load static %}
+
+{% block body %}
 <div class="habit-form-container">
   <div class="habit-form-box">
     <form method="post" class="habit-form">
@@ -137,6 +140,8 @@
     </form>
   </div>
 </div>
-{% endblock %} {% block form_script %}
+{% endblock %}
+
+{% block form_script %}
 <script src="{% static 'js/form.js' %}"></script>
 {% endblock %}
