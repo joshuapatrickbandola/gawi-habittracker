@@ -5,6 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css"
+    />
     <title>Gawi Habit Tracker</title>
 
     <link rel="icon" type="image/png" href="{% static 'img/logo-icon.png' %}">
@@ -12,6 +17,11 @@
 </head>
 <body>
     <div class="page-container">
+        <div class="container">
+            {% block sidebar %}{% endblock %}
+            {% block body %}{% endblock %}
+        </div>
+        
         <header>
             {% block header %}{% endblock %}
         </header>
@@ -19,9 +29,10 @@
             {% block main %}{% endblock %}
         </main>
         <footer>
-            &copy; 2026 hoxvii. All rights reserved.
+            {% block footer %}{% endblock %}
         </footer>
     </div>
-    <script src="{% static 'js/script.js' %}"></script>
 </body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+{% block script %}{% endblock %}
 </html>

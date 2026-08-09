@@ -1,88 +1,229 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block main %}
-<h1>Dashboard</h1>
-
-<div class="card">
-    <h2>Current Daily Streak</h2>
-
-    <p class="streak">
-        {{ daily_streak }} day{{ daily_streak|pluralize }}
-    </p>
+{% block sidebar %}
+<div class="sidebar-container">
+    <div class="sidebar">
+        <div class="menu-btn">
+            <i class="ph-bold ph-caret-left"></i>
+        </div>
+        <div class="head">
+            <div class="user-img">
+                <img src="{{ user.profile.avatar_url }}" alt="Profile Image">
+            </div>
+            <div class="user-details">
+                <p class="user-name">{{ user.profile.display_name }}</p>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="menu">
+                <p class="title-bar">Main</p>
+                <ul class="main-menu">
+                    <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        <a href="{% url 'habittracker:dashboard' request.user.username %}">
+                            <i class="icon ph-bold ph-house"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="icon ph-bold ph-list"></i>
+                            <span class="text">Habits</span>
+                            <i class="arrow ph-bold ph-caret-down"></i>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="{% url 'habittracker:habit_list' request.user.username %}">
+                                    <span class="text">Habit List</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'habittracker:habit_create' request.user.username %}">
+                                    <span class="text">Add Habits</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="title-bar">Settings</p>
+                <ul class="main-menu">
+                    <li>
+                        <a href="#">
+                            <i class="icon ph-bold ph-gear"></i>
+                            <span class="text">Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="title-bar">Account</p>
+                <ul>
+                    <li>
+                        <a href="#">
+                            <i class="icon ph-bold ph-user-circle"></i>
+                            <span class="text">Profile</span>
+                        </a>
+                        <a href="{% url 'account_logout' %}">
+                            <i class="icon ph-bold ph-sign-out"></i>
+                            <span class="text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
 
-<div class="card">
-    <a href="{% url 'habittracker:habit_list' request.user.username %}">Your Habits</a>
-
-    {% if habits %}
-        <ul>
-            {% for habit in habits %}
-                <li>
-                    <strong>{{ habit.name }}</strong>
-                    {% if habit.description %}
-                        <br>
-                        {{ habit.description }}
+{% block body %}
+<div class="dashboard-container">
+    <div class="dashbox streak" style="grid-area: box-1;">
+        {% if profile_streak == 0 %}
+        <img src="{% static 'img/gibbit-sleepy.png' %}" alt="Sleepy Gibbit" class="streak-gibbit">
+        {% else %}
+        <img src="{% static 'img/gibbit-onfire.png' %}" alt="On Fire Gibbit" class="streak-gibbit">
+        {% endif %}
+        <div class="streak-info">
+            <p class="days">{{ profile_streak }}</p>
+            {% if profile_streak >= 365 %}
+                <p class="streak-msg">Gibbit is legendary!</p>
+            {% elif profile_streak >= 30 %}
+                <p class="streak-msg">Gibbit is proud of you!</p>
+            {% elif profile_streak > 0 %}
+                <p class="streak-msg">Keep hopping!</p>
+            {% else %}
+                <p class="streak-msg">Ignite your streak</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="dashbox bar-graph" style="grid-area: box-2;">
+        <p class="chart-title">Weekly Habit Report</p>
+        <div class="chart-container">
+            <canvas id="weeklyChart"></canvas>
+        </div>
+    </div>
+    <div class="dashbox best-performing" style="grid-area: box-3;">
+        <p class="best-title">Habits Preview</p>
+        <div class="habit-list">
+            {% for item in today_habits %}
+            <div class="habit-card">
+                <div class="habit-details">
+                    <p class="habit-name">{{item.habit.name}}</p>
+                </div>
+                <div class="habit-status">
+                    {% if item.completed %}
+                        <div class="habit-status completed">
+                            <p>Accomplished</p>
+                        </div>
+                    {% else %}
+                        <div class="habit-status missed">
+                            <p>Not yet accomplished</p>
+                        </div>
                     {% endif %}
-                </li>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
-    {% else %}
-        <p>No habits yet.</p>
-    {% endif %}
-</div>
-
-<div class="card">
-    <h2>Recent Accomplishments</h2>
-
-    {% if accomplishments %}
-        <ul>
-            {% for accomplishment in accomplishments %}
-                <li>
-                    {{ accomplishment.date }} -
-                    {{ accomplishment.habit.name }}
-                </li>
+        </div>
+    </div>
+    <div class="dashbox achievements" style="grid-area: box-4;">
+        <div class="display-trophy">
+            <div class="achievement-info">
+                <div class="achievement-text">
+                    {% if achievement_progress.next %}
+                    <img src="{% static 'img/gibbit-trophy-shadow.png' %}" alt="Gibbit Unlocked">
+                    <p class="trophy-title">{{ achievement_progress.next.name }}</p>
+                    <p class="trophy-description">{{ achievement_progress.next.description }}</p>
+                    {% else %}
+                    <img src="{% static 'img/gibbit-trophy.png' %}" alt="Gibbit Unlocked">
+                    <p class="trophy-title">All Achievements Unlocked!</p>
+                    <p class="trophy-description">Congratulations! You've earned every achievement.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="achievement-trophies">
+            <div class="achievement-grid">
+                {% for achievement in achievement_progress.all %}
+                <div class="trophy-box">
+                    {% if achievement in achievement_progress.earned %}
+                    <img
+                        src="{% static 'img/gibbit-trophy.png' %}"
+                        alt="{{ achievement.name }}"
+                        class="trophy-icon"
+                    >
+                    {% else %}
+                    <img
+                        src="{% static 'img/gibbit-trophy-shadow.png' %}"
+                        alt="{{ achievement.name }}"
+                        class="trophy-icon"
+                    >
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="dashbox warning" style="grid-area: box-5;">
+        {% if struggling_habits %}
+            <img src="{% static 'img/gibbit-caution.png' %}" alt="Gibbit Caution">
+        {% else %}
+            <img src="{% static 'img/gibbit-goodjob.png' %}" alt="Gibbit Good Job">
+        {% endif %}
+        <div class="habit-list">
+            {% for item in struggling_habits %}
+            <div class="habit-card">
+                <div class="habit-info">
+                    <p>{{ item.habit.name }}</p>
+                </div>
+                <div class="habit-status">
+                    Missed {{ item.missed }} day{{ item.missed|pluralize }}
+                </div>
+            </div>
+            {% empty %}
+            <div class="habit-card">
+                <p>No missed habits. Keep it up!</p>
+            </div>
             {% endfor %}
-        </ul>
-    {% else %}
-        <p>No accomplishments yet.</p>
-    {% endif %}
+        </div>
+    </div>
+    <div class="dashbox daily-accomplishments" style="grid-area: box-6;">
+        <p class="title-contrib">{{ heatmap.quarter }} {{ heatmap.year }}</p>
+        <div class="contrib-display">
+            <div class="day-labels">
+                <p>Sun</p>
+                <p>Mon</p>
+                <p>Tue</p>
+                <p>Wed</p>
+                <p>Thu</p>
+                <p>Fri</p>
+                <p>Sat</p>
+            </div>
+            <div class="heatmap-grid">
+                {% for day in heatmap.data %}
+                    {% if day.placeholder %}
+                        <div class="heatmap-cell placeholder"></div>
+                    {% elif day.count is None %}
+                        <div 
+                            class="heatmap-cell future-day"
+                            data-date="{{ day.date|date:'M d, Y' }}"
+                            data-count="0"
+                        ></div>
+                    {% else %}
+                        <div
+                            class="heatmap-cell level-{{ day.level }}"
+                            data-date="{{ day.date|date:'M d, Y' }}"
+                            data-count="{{ day.count }}"
+                        ></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="heatmap-tooltip" id="heatmapTooltip"></div>
+    </div>
 </div>
+{{ weekly_report|json_script:"weekly-data" }}
+{{ habit_count|json_script:"habit-count" }}
+{% endblock %}
 
-<div class="card">
-    <h2>Achievements</h2>
-
-    {% if achievements %}
-        <ul>
-            {% for achievement in achievements %}
-                <li>
-                    {{ achievement.achievement.name }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No achievements unlocked.</p>
-    {% endif %}
-</div>
-
-<div class="card">
-    <h2>Weekly Report</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Day</th>
-                <th>Habits Completed</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for item in weekly_data %}
-            <tr>
-                <td>{{ item.day }}</td>
-                <td>{{ item.completed }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}

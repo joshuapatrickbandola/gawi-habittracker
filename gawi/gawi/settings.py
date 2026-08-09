@@ -177,6 +177,8 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 
 ACCOUNT_ADAPTER = "accounts.adapter.AccountAdapter"
 
+SOCIALACCOUNT_ADAPTER = "accounts.adapter.CustomSocialAccountAdapter"
+
 # Media
 
 MEDIA_URL = "/media/"

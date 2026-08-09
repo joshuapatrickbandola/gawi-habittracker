@@ -1,5 +1,6 @@
+from datetime import date, timedelta
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import User
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -14,10 +15,10 @@ from django.views.generic import (
 )
 
 from .models import (
+    Achievement,
     Habit,
     HabitAccomplishment,
     HabitStreak,
-    UserAchievement,
 )
 
 
@@ -25,67 +26,102 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
 
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
 
-        username = self.kwargs["username"]
+        user = self.request.user
 
-        user = User.objects.get(username=username)
+        profile = user.profile
 
-        habits = Habit.objects.filter(profile__user=user)
-
-        # Calendar heatmap data
-        accomplishments = HabitAccomplishment.objects.filter(
-            habit__in=habits,
-            completed=True,
-        )
-
-        # Achievements
-        achievements = UserAchievement.objects.filter(profile__user=user)
-
-        # Current daily profile streak
-        daily_streak = self.calculate_daily_streak(accomplishments)
-
-        # Weekly report data
-        weekly_data = self.get_weekly_report(habits)
+        habits = Habit.objects.filter(profile=profile, is_archived=False)
 
         context.update(
             {
                 "habits": habits,
-                "accomplishments": accomplishments,
-                "achievements": achievements,
-                "daily_streak": daily_streak,
-                "weekly_data": weekly_data,
+                "habit_count": habits.count(),
+                "today_habits": self.get_today_habits(habits),
+                "profile_streak": self.calculate_profile_streak(habits),
+                "achievement_progress": self.get_achievement_progress(profile),
+                "weekly_report": self.get_weekly_report(habits),
+                "heatmap": self.get_heatmap(habits),
+                "struggling_habits": self.get_missed_habits(habits),
             }
         )
 
         return context
 
-    def calculate_daily_streak(self, accomplishments):
+    def get_today_habits(self, habits):
+        """
+        Returns the all the habits and their
+        respective names, status, and streak.
+        """
+
+        today = timezone.now().date()
+
+        data = []
+
+        for habit in habits:
+            completed = habit.accomplishments.filter(
+                date=today, completed=True
+            ).exists()
+
+            data.append(
+                {
+                    "habit": habit,
+                    "completed": completed,
+                    "streak": habit.streak.current_streak,
+                }
+            )
+
+        return data
+
+    def calculate_profile_streak(self, habits):
         """
         Counts consecutive days where at least
         one habit was completed.
         """
 
-        dates = set(accomplishments.values_list("date", flat=True))
+        dates = set(
+            HabitAccomplishment.objects.filter(
+                habit__in=habits, completed=True
+            ).values_list("date", flat=True)
+        )
 
         streak = 0
-        today = __import__("datetime").date.today()
 
-        while today in dates:
+        day = timezone.now().date()
+
+        while day in dates:
             streak += 1
-            today -= __import__("datetime").timedelta(days=1)
+
+            day -= timedelta(days=1)
 
         return streak
 
-    def get_weekly_report(self, habits):
-        """
-        Generates weekly completion statistics.
-        """
+    def get_achievement_progress(self, profile):
+        all_achievements = Achievement.objects.order_by("requirement")
 
-        from datetime import date, timedelta
+        earned_ids = set(profile.achievements.values_list("achievement_id", flat=True))
+
+        next_achievement = None
+
+        for achievement in all_achievements:
+            if achievement.id not in earned_ids:
+                next_achievement = achievement
+                break
+
+        earned_achievements = all_achievements.filter(id__in=earned_ids)
+
+        return {
+            "earned": earned_achievements,
+            "next": next_achievement,
+            "all": all_achievements,
+        }
+
+    def get_weekly_report(self, habits):
 
         today = date.today()  # noqa: DTZ011
-        start_week = today - timedelta(days=today.weekday())
+        start_week = today - timedelta(days=(today.weekday() + 1) % 7)
 
         data = []
 
@@ -106,6 +142,106 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             )
 
         return data
+
+    def get_heatmap(self, habits):
+
+        today = date.today()  # noqa: DTZ011
+
+        quarter = (today.month - 1) // 3
+        start_month = quarter * 3 + 1
+
+        quarter_names = ["JAN-MAR", "APR-JUN", "JUL-SEP", "OCT-DEC"]
+
+        start_date = date(today.year, start_month, 1)
+
+        if start_month == 10:
+            end_date = date(today.year + 1, 1, 1)
+        else:
+            end_date = date(today.year, start_month + 3, 1)
+
+        data = []
+
+        start_offset = (start_date.weekday() + 1) % 7
+
+        for _ in range(start_offset):
+            data.append(
+                {
+                    "date": None,
+                    "count": None,
+                    "placeholder": True,
+                }
+            )
+
+        current_day = start_date
+
+        while current_day < end_date:
+            if current_day > today:
+                count = None
+            else:
+                count = HabitAccomplishment.objects.filter(
+                    habit__in=habits,
+                    date=current_day,
+                    completed=True,
+                ).count()
+
+                if count == 0:
+                    level = 0
+                elif count <= 1:
+                    level = 1
+                elif count <= 3:
+                    level = 2
+                elif count <= 5:
+                    level = 3
+                else:
+                    level = 4
+
+            data.append(
+                {
+                    "date": current_day,
+                    "count": count,
+                    "level": level,
+                    "placeholder": False,
+                }
+            )
+
+            current_day += timedelta(days=1)
+
+        remainder = len(data) % 7
+
+        if remainder:
+            for _ in range(7 - remainder):
+                data.append(
+                    {
+                        "date": None,
+                        "count": None,
+                        "placeholder": True,
+                    }
+                )
+
+        return {
+            "quarter": quarter_names[quarter],
+            "year": today.year,
+            "data": data,
+        }
+
+    def get_missed_habits(self, habits):
+
+        result = []
+
+        for habit in habits:
+            missed = HabitAccomplishment.objects.filter(
+                habit=habit, completed=False
+            ).count()
+
+            if missed > 0:
+                result.append(
+                    {
+                        "habit": habit,
+                        "missed": missed,
+                    }
+                )
+
+        return sorted(result, key=lambda x: x["missed"], reverse=True)
 
 
 class HabitListView(LoginRequiredMixin, ListView):

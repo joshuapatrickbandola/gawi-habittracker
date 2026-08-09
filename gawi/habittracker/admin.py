@@ -85,15 +85,13 @@ class HabitAccomplishmentAdmin(admin.ModelAdmin):
 class AchievementAdmin(admin.ModelAdmin):
     list_display = (
         "name",
-        "type",
         "requirement",
     )
-    list_filter = ("type",)
     search_fields = (
         "name",
         "description",
     )
-    ordering = ("type", "requirement")
+    ordering = ("requirement",)
 
 
 @admin.register(UserAchievement)

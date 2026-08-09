@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.templatetags.static import static
 
 
 class Profile(models.Model):
@@ -15,14 +16,18 @@ class Profile(models.Model):
         blank=True,
         null=True,
     )
+    google_picture = models.URLField(blank=True)
     bio = models.TextField(
         max_length=500,
         blank=True,
     )
 
     @property
-    def is_complete(self):
-        return bool(self.display_name and self.display_name.strip())
+    def avatar_url(self):
+        if self.profile_picture:
+            return self.profile_picture.url
 
-    def __str__(self):
-        return self.display_name
+        if self.google_picture:
+            return self.google_picture
+
+        return static("img/default-avatar.png")

@@ -49,6 +49,7 @@ class Habit(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_archived = models.BooleanField(default=False)
+    archived_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -62,6 +63,8 @@ class HabitStreak(models.Model):
     )
     current_streak = models.PositiveIntegerField(default=0)
     longest_streak = models.PositiveIntegerField(default=0)
+
+    archived_at = models.DateTimeField(null=True, blank=True)
 
     def recalculate(self):
         today = timezone.now().date()
@@ -99,6 +102,9 @@ class HabitAccomplishment(models.Model):
                 name="unique_habit_accomplishment_per_day",
             )
         ]
+        indexes = [  # noqa: RUF012
+            models.Index(fields=["date"]),
+        ]
         ordering = ["-date"]  # noqa: RUF012
 
     def __str__(self):
@@ -108,9 +114,7 @@ class HabitAccomplishment(models.Model):
 class Achievement(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    icon = models.CharField(max_length=255)
     requirement = models.PositiveIntegerField()
-    type = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
