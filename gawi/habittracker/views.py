@@ -1,14 +1,16 @@
+import datetime
 from datetime import date, timedelta
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Prefetch
+from django.db.models import Max, Prefetch
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views import View
 from django.views.generic import (
     CreateView,
+    DeleteView,
     ListView,
     TemplateView,
     UpdateView,
@@ -19,7 +21,10 @@ from .models import (
     Habit,
     HabitAccomplishment,
     HabitStreak,
+    UserAchievement,
 )
+
+HEATMAP_WEEKS = 53
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -33,7 +38,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         profile = user.profile
 
-        habits = Habit.objects.filter(profile=profile, is_archived=False)
+        habits = Habit.objects.filter(
+            profile=profile,
+            is_archived=False,
+        )
 
         context.update(
             {
@@ -251,45 +259,106 @@ class HabitListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         today = timezone.now().date()
+        heatmap_start = self._heatmap_start_date(today)
 
         return (
             Habit.objects.filter(
                 profile=self.request.user.profile,
                 is_archived=False,
             )
-            .select_related(
-                "category",
-                "streak",
-            )
+            .select_related("category", "streak")
             .prefetch_related(
                 Prefetch(
                     "accomplishments",
                     queryset=HabitAccomplishment.objects.filter(date=today),
                     to_attr="today_completion",
-                )
+                ),
+                Prefetch(
+                    "accomplishments",
+                    queryset=HabitAccomplishment.objects.filter(
+                        date__gte=heatmap_start,
+                        date__lte=today,
+                        completed=True,
+                    ),
+                    to_attr="heatmap_accomplishments",
+                ),
             )
         )
+
+    @staticmethod
+    def _heatmap_start_date(today):
+        start = today - datetime.timedelta(weeks=HEATMAP_WEEKS - 1)
+        days_since_sunday = (start.weekday() + 1) % 7
+        return start - datetime.timedelta(days=days_since_sunday)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
+        heatmap_start = self._heatmap_start_date(today)
+
+        for habit in context["habits"]:
+            habit.heatmap_weeks = self._build_heatmap(
+                habit.heatmap_accomplishments, heatmap_start, today
+            )
+        return context
+
+    @staticmethod
+    def _build_heatmap(accomplishments, start_date, end_date):
+        completed_dates = {a.date for a in accomplishments}
+
+        weeks, week = [], []
+        current = start_date
+        while current <= end_date:
+            week.append({"date": current, "completed": current in completed_dates})
+            if current.weekday() == 5:
+                weeks.append(week)
+                week = []
+            current += datetime.timedelta(days=1)
+
+        if week:
+            while len(week) < 7:
+                week.append({"date": None, "completed": False})
+            weeks.append(week)
+
+        return weeks
 
 
 class HabitCompleteView(LoginRequiredMixin, View):
     def post(self, request, pk):
-
         habit = get_object_or_404(Habit, pk=pk, profile=request.user.profile)
-
         today = timezone.now().date()
 
         accomplishment, _ = HabitAccomplishment.objects.get_or_create(
             habit=habit,
             date=today,
         )
-
         accomplishment.completed = not accomplishment.completed
-
         accomplishment.save()
 
         habit.streak.recalculate()
 
+        if accomplishment.completed:
+            self._check_achievements(request.user.profile)
+
         return JsonResponse({"completed": accomplishment.completed})
+
+    def _check_achievements(self, profile):
+        best_streak = (
+            HabitStreak.objects.filter(habit__profile=profile)
+            .aggregate(best=Max("longest_streak"))
+            .get("best")
+            or 0
+        )
+
+        eligible = Achievement.objects.filter(requirement__lte=best_streak).exclude(
+            id__in=profile.achievements.values_list("achievement_id", flat=True)
+        )
+
+        for achievement in eligible:
+            UserAchievement.objects.get_or_create(
+                profile=profile,
+                achievement=achievement,
+            )
 
 
 class HabitCreateView(LoginRequiredMixin, CreateView):
@@ -391,3 +460,20 @@ class HabitUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         habit = self.get_object()
 
         return habit.profile.user == self.request.user
+
+
+class HabitDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Habit
+
+    def test_func(self):
+        habit = self.get_object()
+        return habit.profile == self.request.user.profile
+
+    def get_success_url(self):
+        return reverse(
+            "habittracker:habit_list",
+            kwargs={"username": self.request.user.username},
+        )
+
+    def post(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)

@@ -32,7 +32,7 @@
         <p class="best-title">Habits Preview</p>
         <div class="habit-list">
             {% for item in today_habits %}
-            <div class="habit-card">
+            <div class="habit-cards">
                 <div class="habit-details">
                     <p class="habit-name">{{item.habit.name}}</p>
                 </div>
@@ -97,7 +97,7 @@
         {% endif %}
         <div class="habit-list">
             {% for item in struggling_habits %}
-            <div class="habit-card">
+            <div class="habit-cards">
                 <div class="habit-info">
                     <p>{{ item.habit.name }}</p>
                 </div>
@@ -106,7 +106,7 @@
                 </div>
             </div>
             {% empty %}
-            <div class="habit-card">
+            <div class="habit-cards">
                 <p>No missed habits. Keep it up!</p>
             </div>
             {% endfor %}

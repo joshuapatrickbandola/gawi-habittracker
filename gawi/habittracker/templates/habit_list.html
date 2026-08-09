@@ -1,90 +1,64 @@
-{% extends "base.html" %}
+{% extends "main.html" %}
+{% load static %}
 
-{% block script %}
-<script>
-const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-
-document.querySelectorAll(".habit-checkbox").forEach(checkbox => {
-    checkbox.addEventListener("change", async () => {
-        const response = await fetch(checkbox.dataset.url, {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": csrfToken,
-            },
-        });
-
-        const data = await response.json();
-
-        checkbox.checked = data.completed;
-    });
-});
-</script>
-{% endblock %}
-
-{% block main %}
-
-<div class="container">
-    <div class="sidebar">
-        <div class="head">
-            <div class="user-img">
-                <img src="{{ user.profile.avatar_url }}" alt="Profile Image">
+{% block body %}
+{% csrf_token %}
+<div class="list-container">
+    <div class="list-box">
+        {% for habit in habits %}
+        <div class="habit-card" style="--habit-color: {{ habit.color }};">
+            <div class="name-checkbox" style="--habit-color: {{ habit.color }};">
+                <p>{{ habit.name }}</p>
+                <input
+                    type="checkbox"
+                    class="habit-checkbox"
+                    data-url="{% url 'habittracker:habit_complete' habit.pk %}"
+                    {% if habit.today_completion and habit.today_completion.0.completed %}checked{% endif %}
+                >
             </div>
-            <div class="user-details">
-                <p class="user-name">{{ user.profile.display_name }}</p>
+            <div class="category-name">
+                <p>
+                    {% if habit.custom_category %}
+                        {{ habit.custom_category }}
+                    {% elif habit.category %}
+                        {{ habit.category.name }}
+                    {% else %}
+                        Uncategorized
+                    {% endif %}
+                </p>
             </div>
+            <div class="tracker-grid" style="--habit-color: {{ habit.color }};">
+                {% for week in habit.heatmap_weeks %}
+                <div class="tracker-week">
+                    {% for day in week %}
+                    <div
+                        class="tracker-day{% if day.completed %} completed{% endif %}{% if not day.date %} empty{% endif %}"
+                        {% if day.date %}title="{{ day.date }}"{% endif %}
+                    ></div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            <form
+                method="post"
+                action="{% url 'habittracker:habit_delete' habit.pk %}"
+                class="habit-delete-form"
+                onsubmit="return confirm('Delete &quot;{{ habit.name|escapejs }}&quot;? This can\'t be undone.');"
+            >
+                {% csrf_token %}
+                <button type="submit" class="habit-delete-btn" aria-label="Delete {{ habit.name }}">
+                    <i class="icon ph-bold ph-trash"></i>
+                </button>
+            </form>
         </div>
-        <div class="nav">
-            <div class="menu">
-                <p class="title-bar">Main</p>
-                <ul>
-                    <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-                        <a href="{% url 'habittracker:dashboard' request.user.username %}">
-                            <i class="icon ph-bold ph-house"></i>
-                            <span class="text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'habittracker:habit_list' request.user.username %}">
-                            <i class="icon ph-bold ph-list"></i>
-                            <span class="text">Habits</span>
-                            <i class="arrow ph-bold ph-caret-down"></i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a href="{% url 'habittracker:habit_create' request.user.username %}">
-                                    <span class="text">Add Habits</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        {% empty %}
+        <p>No habits yet.</p>
+        {% endfor %}
+
     </div>
 </div>
+{% endblock %}
 
-<h1>My Habits</h1>
-<a href="{% url 'habittracker:habit_create' request.user.username %}">Add a habit</a>
-
-{% csrf_token %}
-
-{% for habit in habits %}
-<div class="habit">
-    <label>
-        <input
-            type="checkbox"
-            class="habit-checkbox"
-            data-url="{% url 'habittracker:habit_complete' habit.pk %}"
-            {% if habit.today_completion and habit.today_completion.0.completed %}checked{% endif %}
-        >
-        {{ habit.name }}
-    </label>
-
-    <p>Category: {{ habit.category.name }}</p>
-</div>
-<hr>
-{% empty %}
-<p>No habits yet.</p>
-{% endfor %}
-
+{% block list_script %}
+<script src="{% static 'js/list.js' %}"></script>
 {% endblock %}

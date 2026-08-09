@@ -18,4 +18,9 @@ urlpatterns = [
         views.HabitCompleteView.as_view(),
         name="habit_complete",
     ),
+    path(
+        "habits/<int:pk>/delete/",
+        views.HabitDeleteView.as_view(),
+        name="habit_delete",
+    ),
 ]
