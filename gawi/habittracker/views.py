@@ -234,21 +234,25 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         }
 
     def get_missed_habits(self, habits):
-
         result = []
 
         for habit in habits:
-            missed = HabitAccomplishment.objects.filter(
-                habit=habit, completed=False
-            ).count()
+            records = list(
+                HabitAccomplishment.objects.filter(habit=habit).order_by("-date")
+            )
+
+            if not records or records[0].completed:
+                continue
+
+            missed = 0
+            for record in records:
+                if not record.completed:
+                    missed += 1
+                else:
+                    break
 
             if missed > 0:
-                result.append(
-                    {
-                        "habit": habit,
-                        "missed": missed,
-                    }
-                )
+                result.append({"habit": habit, "missed": missed})
 
         return sorted(result, key=lambda x: x["missed"], reverse=True)
 
