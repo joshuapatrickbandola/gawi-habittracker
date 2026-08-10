@@ -134,12 +134,15 @@ def profile_view(request, username):
     completed = accomplishment_stats["completed"] or 0
     completion_rate = round((completed / total) * 100) if total else 0
 
+    habits_with_goals = habits.exclude(goal="").order_by("name")
+
     context = {
         "profile_user": profile_user,
         "current_streak": streak_stats["current_streak"] or 0,
         "longest_streak": streak_stats["longest_streak"] or 0,
         "habit_count": habits.count(),
         "completion_rate": completion_rate,
+        "habits_with_goals": habits_with_goals,
     }
     return render(request, "profile_view.html", context)
 

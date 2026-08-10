@@ -8,7 +8,7 @@
     {% for habit in habits %}
     <div class="habit-card" style="--habit-color: {{ habit.color }};">
       <div class="name-checkbox" style="--habit-color: {{ habit.color }};">
-        <p>{{ habit.name }}</p>
+        <p>{{ habit.icon }} {{ habit.name }}</p>
         <input
           type="checkbox"
           class="habit-checkbox"

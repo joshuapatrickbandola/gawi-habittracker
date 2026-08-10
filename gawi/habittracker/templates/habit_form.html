@@ -6,7 +6,34 @@
   <div class="habit-form-box">
     <form method="post" class="habit-form">
       {% csrf_token %}
-      <p class="habit-name-form">{{ form.name }} {{ form.name.errors }}</p>
+      <div class="icon-toggle">
+        <label class="switch">
+          <input type="checkbox" id="icon-toggle-checkbox" />
+          <p>add icon</p>
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+      <div class="icon-name-habit">
+        <div class="selection icon">
+          <div class="icon-picker" id="icon-picker" hidden>
+            <div class="emoji-palette">
+              <div class="custom-emoji-wrapper">
+                <input
+                  type="text"
+                  id="custom-emoji-input"
+                  readonly
+                  placeholder="  +"
+                />
+                <div class="emoji-popup" id="emoji-popup" hidden>
+                  <div class="emoji-popup-grid" id="emoji-popup-grid"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{ form.icon }} {{ form.icon.errors }}
+        </div>
+        <p class="habit-name-form">{{ form.name }} {{ form.name.errors }}</p>
+      </div>
       <div class="selections-form">
         <div class="selection category">
           <div class="custom-select" id="category-select">

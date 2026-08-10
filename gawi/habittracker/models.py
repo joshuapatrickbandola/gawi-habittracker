@@ -40,6 +40,11 @@ class Habit(models.Model):
     color = models.CharField(
         max_length=7,
     )
+    icon = models.CharField(
+        max_length=8,
+        blank=True,
+        default="",
+    )
     goal = models.TextField(blank=True)
     notification_interval = models.PositiveIntegerField(
         default=0,

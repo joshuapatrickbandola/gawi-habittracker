@@ -370,6 +370,7 @@ class HabitFormStylingMixin:
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
 
+        form.fields["icon"].widget.attrs.update({"class": "icon-field"})
         form.fields["name"].widget.attrs.update(
             {"class": "habit-name-field", "placeholder": "Habit Name"}
         )
@@ -398,6 +399,7 @@ class HabitCreateView(HabitFormStylingMixin, LoginRequiredMixin, CreateView):
         "category",
         "goal",
         "color",
+        "icon",
         "notification_interval",
     ]
 
@@ -445,6 +447,7 @@ class HabitUpdateView(
         "category",
         "goal",
         "color",
+        "icon",
         "notification_interval",
     ]
 

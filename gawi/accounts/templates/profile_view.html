@@ -53,5 +53,24 @@
     </div>
   </div>
 
+  <div class="habit-goals-container">
+    <p class="habit-goals-title">Goals</p>
+    {% for habit in habits_with_goals %}
+    <div class="habit-goal-card" style="--habit-color: {{ habit.color }};">
+      <div class="habit-goal-header">
+        <p class="habit-goal-name">{{ habit.name }}</p>
+        {% if habit.category %}
+        <p class="habit-goal-category">{{ habit.category }}</p>
+        {% elif habit.custom_category %}
+        <p class="habit-goal-category">{{ habit.custom_category }}</p>
+        {% endif %}
+      </div>
+      <p class="habit-goal-text">{{ habit.goal }}</p>
+    </div>
+    {% empty %}
+    <p class="no-goals-text">No goals set yet.</p>
+    {% endfor %}
+  </div>
+
 </div>
 {% endblock %}
