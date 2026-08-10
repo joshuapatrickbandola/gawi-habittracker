@@ -127,3 +127,37 @@ class BioForm(forms.ModelForm):
                 }
             )
         }
+
+
+from django import forms
+
+from .models import Profile
+
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["display_name", "profile_picture", "bio"]  # noqa: RUF012
+        widgets = {  # noqa: RUF012
+            "display_name": forms.TextInput(
+                attrs={
+                    "class": "profile-input",
+                    "placeholder": "Your display name",
+                    "maxlength": 63,
+                }
+            ),
+            "bio": forms.Textarea(
+                attrs={
+                    "class": "profile-text-area",
+                    "placeholder": "Tell us a bit about yourself...",
+                    "maxlength": 500,
+                }
+            ),
+            "profile_picture": forms.FileInput(
+                attrs={
+                    "class": "file-input",
+                    "id": "id_profile_picture",
+                    "accept": "image/png, image/jpeg",
+                }
+            ),
+        }

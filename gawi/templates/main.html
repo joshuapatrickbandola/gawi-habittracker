@@ -45,19 +45,10 @@
             </ul>
           </li>
         </ul>
-        <p class="title-bar">Settings</p>
-        <ul class="main-menu">
-          <li>
-            <a href="#">
-              <i class="icon ph-bold ph-gear"></i>
-              <span class="text">Settings</span>
-            </a>
-          </li>
-        </ul>
         <p class="title-bar">Account</p>
         <ul>
           <li>
-            <a href="#">
+            <a href="{% url 'accounts:profile_view' request.user.username %}">
               <i class="icon ph-bold ph-user-circle"></i>
               <span class="text">Profile</span>
             </a>

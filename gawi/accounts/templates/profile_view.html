@@ -1,0 +1,57 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block body %}
+<div class="profile-view-container">
+
+  <div class="profile-header-card">
+    <div class="avatar-profile-deets">
+      <div class="profile-avatar">
+        <img src="{{ profile_user.profile.avatar_url }}" alt="{{ profile_user.profile.display_name }}'s avatar" />
+      </div>
+      <div class="profile-header-info">
+        <p class="profile-display-name">{{ profile_user.profile.display_name }}</p>
+        <p class="profile-username">@{{ profile_user.username }}</p>
+        <p class="profile-joined">
+          <i class="icon ph-bold ph-calendar"></i>
+          Joined {{ profile_user.date_joined|date:"F Y" }}
+        </p>
+        <p class="profile-bio">{{ profile_user.profile.bio }}</p>
+      </div>
+    </div>
+    {% if request.user == profile_user %}
+    <a href="{% url 'accounts:profile_edit' %}" class="profile-edit-button">
+      <i class="ph-bold ph-pencil-simple"></i>
+      Edit Profile
+    </a>
+    {% endif %}
+  </div>
+
+  <div class="profile-stats-grid">
+    <div class="profile-stat-card">
+      <i class="profile-stat-icon ph-bold ph-fire"></i>
+      <p class="profile-stat-value">{{ current_streak|default:"0" }}</p>
+      <p class="profile-stat-label">Current Streak</p>
+    </div>
+
+    <div class="profile-stat-card">
+      <i class="profile-stat-icon ph-bold ph-trophy"></i>
+      <p class="profile-stat-value">{{ longest_streak|default:"0" }}</p>
+      <p class="profile-stat-label">Longest Streak</p>
+    </div>
+
+    <div class="profile-stat-card">
+      <i class="profile-stat-icon ph-bold ph-list-checks"></i>
+      <p class="profile-stat-value">{{ habit_count|default:"0" }}</p>
+      <p class="profile-stat-label">Habits Tracked</p>
+    </div>
+
+    <div class="profile-stat-card">
+      <i class="profile-stat-icon ph-bold ph-check-circle"></i>
+      <p class="profile-stat-value">{{ completion_rate|default:"0" }}%</p>
+      <p class="profile-stat-label">Completion Rate</p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

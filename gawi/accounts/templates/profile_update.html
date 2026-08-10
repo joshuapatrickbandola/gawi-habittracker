@@ -1,35 +1,57 @@
-{% extends "base.html" %}
+{% extends "main.html" %}
+{% load static %}
 
-{% block main %}
-<h1>Edit Profile</h1>
+{% block body %}
+<div class="profile-edit-supercontainer">
+  <div class="profile-edit-container">
+    <p class="profile-form-title">Edit Profile</p>
 
-{% if user.profile.profile_picture %}
-<img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" width="150" height="150" />
-{% endif %}
+    <form method="post" enctype="multipart/form-data" id="profile-edit-form">
+      {% csrf_token %}
 
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %} {{ form.non_field_errors }}
+      <div class="upload-container-edit">
+        <div class="file-preview">
+          <img id="avatar-preview" src="{{ profile.avatar_url }}" alt="Current avatar" />
+        </div>
 
-  <div>
-    <label for="{{ form.display_name.id_for_label }}"> Display Name </label>
-    <br />
-    {{ form.display_name }} {{ form.display_name.errors }}
+        <div class="drop-zone" id="drop-zone">
+          <p class="upload-text">Drag &amp; drop image here</p>
+          <p class="upload-text or">or</p>
+          <label class="browse-button" for="id_profile_picture">Browse Files</label>
+          <p class="upload-text image">PNG or JPG</p>
+        </div>
+
+        {{ form.profile_picture }}
+      </div>
+
+      <div class="input-fields-edit">
+        <div class="field">
+          <p class="field-label">Display Name</p>
+          {{ form.display_name }}
+          {% if form.display_name.errors %}
+          <p class="password-rem">{{ form.display_name.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <p class="field-label">Bio</p>
+          {{ form.bio }}
+          {% if form.bio.errors %}
+          <p class="password-rem">{{ form.bio.errors.0 }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <button type="submit" class="profile-button-edit">Save Changes</button>
+
+      <p class="misc-edit">
+        <a href="{% url 'accounts:profile_view' request.user.username %}" class="green-link g">Cancel</a>
+      </p>
+    </form>
   </div>
+</div>
+{% endblock %}
 
-  <br />
-
-  <div>
-    <label for="{{ form.profile_picture.id_for_label }}"> Profile Picture </label>
-    <br />
-    {{ form.profile_picture }} {{ form.profile_picture.errors }}
-  </div>
-
-  <br />
-
-  <div>
-    <label for="{{ form.bio.id_for_label }}"> Bio </label>
-    <br />
-    {{ form.bio }} {{ form.bio.errors }}
-  </div>
-</form>
+{% block form_script %}
+<script src="{% static 'js/profile-edit.js' %}"></script>
 {% endblock %}
