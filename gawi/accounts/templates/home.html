@@ -15,6 +15,9 @@
       {% csrf_token %}
       <button type="submit" class="home-logout-button">Log out</button>
     </form>
+    <div class="profile-img">
+      <img src="{{ user.profile.avatar_url }}" alt="Profile Image" style="width: 40px; border-radius: 14px;">
+    </div>
     {% else %}
     <a href="{% url 'account_login' %}">
       <div class="home-login-button">

@@ -151,14 +151,25 @@ document.querySelector(".habit-form").addEventListener("submit", async (e) => {
     const intervalField = document.getElementById("id_notification_interval");
     const interval = parseInt(intervalField?.value || "0", 10);
 
-    if (interval > 0 && "Notification" in window && Notification.permission === "default") {
-        e.preventDefault();
-        await setupPushNotifications(
-            "{{ vapid_public_key }}",
-            "{% url 'accounts:push_subscribe' %}",
-            "{{ csrf_token }}"
-        );
-        e.target.submit();
+    if (interval > 0 && "Notification" in window) {
+        if (Notification.permission === "default") {
+            e.preventDefault();
+            await setupPushNotifications(
+                "{{ vapid_public_key }}",
+                "{% url 'accounts:push_subscribe' %}",
+                "{{ csrf_token }}"
+            );
+            e.target.submit();
+        } else if (Notification.permission === "granted") {
+            e.preventDefault();
+            await setupPushNotifications(
+                "{{ vapid_public_key }}",
+                "{% url 'accounts:push_subscribe' %}",
+                "{{ csrf_token }}"
+            );
+            e.target.submit();
+        }
+        // if "denied", fall through and just let the form submit normally — no subscription attempt
     }
 });
 </script>

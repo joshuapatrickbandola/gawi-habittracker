@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.urls import reverse
 from django.utils import timezone
 from habittracker.models import Habit
 from pywebpush import WebPushException, webpush
@@ -41,8 +42,11 @@ class Command(BaseCommand):
         payload = {
             "title": f"Don't forget: {habit.name}",
             "body": habit.goal or "Keep your streak going!",
-            "habit_id": habit.id,
-            "url": "/",
+            "habit_id": f"{habit.id}-{timezone.now().timestamp()}",
+            "url": reverse(
+                "habittracker:habit_list",
+                kwargs={"username": habit.profile.user.username},
+            ),
         }
 
         for sub in subscriptions:

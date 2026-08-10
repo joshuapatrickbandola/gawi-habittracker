@@ -79,7 +79,7 @@ def post_login(request):
 def post_signup(request):
     profile = request.user.profile
 
-    if profile.is_complete:
+    if profile.display_name:
         return redirect(
             "habittracker:dashboard",
             username=request.user.username,
