@@ -24,7 +24,7 @@ class Habit(models.Model):
         on_delete=models.CASCADE,
         related_name="habits",
     )
-    name = models.CharField(max_length=16)
+    name = models.CharField(max_length=24)
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
