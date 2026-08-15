@@ -98,7 +98,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         streak = 0
 
-        day = timezone.now().date()
+        day = timezone.localtime(timezone.now()).date()
 
         while day in dates:
             streak += 1
