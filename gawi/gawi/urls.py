@@ -24,7 +24,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("", include("accounts.urls")),
-    path("gawi-habittracker/", include("habittracker.urls")),
+    path("gawi/", include("habittracker.urls")),
 ]
 
 if settings.DEBUG:
