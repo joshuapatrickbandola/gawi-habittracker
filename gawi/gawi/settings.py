@@ -33,6 +33,13 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "gawihabittracker.online",
+    "www.gawihabittracker.online",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://gawihabittracker.online",
+    "https://www.gawihabittracker.online",
 ]
 
 if os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
