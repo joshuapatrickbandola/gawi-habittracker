@@ -83,7 +83,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://gawi-loading.onrender.com",
+    "https://www.gawihabittracker.online",
 ]
 
 ROOT_URLCONF = "gawi.urls"
