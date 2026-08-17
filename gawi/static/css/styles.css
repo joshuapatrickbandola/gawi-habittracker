@@ -1315,7 +1315,7 @@ main {
   color: var(--brand-green-1);
   width: 580px;
   padding: 10px;
-  height: 254px;
+  height: 150px;
   border-radius: 14px;
   border-color: var(--brand-grey);
   resize: none;
@@ -2961,7 +2961,7 @@ main {
 
 .upload-container-edit {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
   justify-content: center;
   width: 580px;
@@ -2993,6 +2993,45 @@ main {
   color: var(--brand-grey-2);
   width: 580px;
   padding-top: 16px;
+}
+
+@media (max-width: 700px) {
+  .profile-edit-supercontainer {
+    padding: 20px 0;
+  }
+
+  .upload-container-edit {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 270px;
+  }
+
+  .profile-button-edit {
+    color: var(--brand-white-1);
+    background-color: var(--brand-green-2);
+    border: none;
+    border-radius: 14px;
+    height: 30px;
+    width: 300px;
+  }
+
+  .input-fields-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 16px;
+  }
+
+  .misc-edit {
+    display: flex;
+    justify-content: center;
+    color: var(--brand-grey-2);
+    width: 300px;
+    padding-top: 16px;
+  }
 }
 
 .avatar-profile-deets {
