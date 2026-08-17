@@ -2,7 +2,7 @@
    Dashboard - Side Bar
    ================================== */
 
-$('.menu > ul > li').click(function () {
+$('.menu > .menu-box > ul > li').click(function () {
   $(this).toggleClass('open');
 
   $(this).closest('li').find('.sub-menu').stop(true, true).slideToggle(200);

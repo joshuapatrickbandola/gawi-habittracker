@@ -140,6 +140,8 @@ main {
   width: 180px;
   height: auto;
   transform: translateX(0px);
+
+  transition: all 0.3s ease;
 }
 
 .home-register-buttons {
@@ -159,6 +161,8 @@ main {
   color: var(--brand-green-1);
   font-weight: 600;
   font-size: 16px;
+
+  transition: all 0.3s ease;
 }
 
 .home-login-button:hover {
@@ -178,6 +182,8 @@ main {
   color: var(--brand-white-1);
   font-weight: 600;
   font-size: 16px;
+
+  transition: all 0.3s ease;
 }
 
 .home-signup-button:hover {
@@ -204,6 +210,52 @@ main {
 
   border: 1px solid var(--brand-green-1);
   cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.profile-img img {
+  width: 40px;
+  border-radius: 14px;
+}
+
+@media (max-width: 600px) {
+  .logo-buttons-container {
+    padding: 40px 30px;
+    padding-bottom: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    width: 100px;
+  }
+  .home-login-button {
+    width: 90px;
+    height: 30px;
+
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .home-signup-button,
+  .home-view-dashboard {
+    width: 90px;
+    height: 30px;
+
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .home-logout-button {
+    width: 90px;
+    height: 30px;
+
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .profile-img img {
+    width: 32px;
+    border-radius: 12px;
+  }
 }
 
 /* =============
@@ -219,7 +271,8 @@ main {
 }
 
 .headline {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-headline {
@@ -228,6 +281,8 @@ main {
   font-size: 96px;
   font-weight: 700;
   line-height: 90%;
+
+  transition: all 0.3s ease;
 }
 
 .sub-headline {
@@ -236,12 +291,16 @@ main {
   font-size: 24px;
   font-weight: 400;
   line-height: 120%;
+
+  transition: all 0.3s ease;
 }
 
 .welcome-gibbit {
   width: 335px;
   height: auto;
   transform: translateX(-50px);
+
+  transition: all 0.3s ease;
 }
 
 @media (max-width: 1200px) {
@@ -266,6 +325,60 @@ main {
     width: 250px;
     height: auto;
     transform: translateX(-20px);
+  }
+}
+
+@media (max-width: 800px) {
+  .hero-section {
+    padding-top: 180px;
+  }
+  .main-headline {
+    width: 281px;
+    font-size: 48px;
+  }
+  .sub-headline {
+    width: 245px;
+    font-size: 16px;
+  }
+  .welcome-gibbit {
+    width: 200px;
+    height: auto;
+    transform: translateX(-20px);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-section {
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column-reverse;
+    height: 92vh;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+  }
+  .headline {
+    gap: 20px;
+    align-items: center;
+  }
+  .main-headline {
+    width: 350px;
+
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 90%;
+  }
+  .sub-headline {
+    width: 250px;
+
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 120%;
+  }
+  .welcome-gibbit {
+    width: 200px;
+    height: auto;
+    transform: translateX(0px);
   }
 }
 
@@ -392,13 +505,75 @@ main {
   }
 }
 
+@media (max-width: 800px) {
+  .title {
+    font-size: 48px;
+    padding-top: 275px;
+  }
+  .subtitle {
+    width: 600px;
+    font-size: 16px;
+  }
+  .gibbit-features {
+    width: 150px;
+    height: auto;
+  }
+  .gibbit-features-exp {
+    width: 170px;
+    height: auto;
+  }
+  .feature-subtext {
+    font-size: 14px;
+  }
+  .feature-subtext-exp {
+    font-size: 14px;
+    transform: translateX(-11px);
+  }
+}
+@media (max-width: 600px) {
+  .title {
+    font-size: 36px;
+    padding-top: 100px;
+  }
+  .subtitle {
+    width: 350px;
+    font-size: 14px;
+  }
+  .features-section {
+    height: max-content;
+    padding-bottom: 100px;
+  }
+  .features {
+    align-items: center;
+    flex-direction: column-reverse;
+  }
+  .gibbit-features {
+    width: 200px;
+    height: auto;
+  }
+  .gibbit-features-exp {
+    width: 210px;
+    transform: translateX(10px);
+    height: auto;
+  }
+  .feature-subtext {
+    font-size: 16px;
+  }
+  .feature-subtext-exp {
+    font-size: 16px;
+    transform: translateX(-3px);
+  }
+}
+
 /* =============
    Quote Section
    ============= */
 
 .quote-section {
   height: 100vh;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .quote {
@@ -436,11 +611,26 @@ main {
   }
 }
 
+@media (max-width: 600px) {
+  .quote {
+    width: 300px;
+    font-size: 22px;
+    padding-top: 225px;
+    padding-bottom: 100px;
+  }
+
+  .gibbit-jump {
+    width: 237px;
+    height: 316px;
+  }  
+}
+
 /* ==========================
    Login and Signup Page
    ========================== */
 
 .registration-container {
+  padding: 0 40px;
   padding-top: 150px;
   display: flex;
   gap: 100px;
@@ -456,6 +646,7 @@ main {
 }
 
 .right-container {
+  width: 500px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -463,7 +654,6 @@ main {
 
 .registration-logo {
   width: 181px;
-  height: 68px;
   margin: 0 auto;
 }
 
@@ -536,7 +726,7 @@ main {
 }
 
 .registration-button {
-  width: 463px;
+  width: 100%;
   height: 37px;
   border-radius: 12px;
   background: var(--brand-green-1);
@@ -615,6 +805,41 @@ main {
   .registration-container {
     padding-top: 150px;
     gap: 50px;
+  }
+}
+
+@media (max-width: 800px) {
+  .registration-container {
+    padding-top: 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .registration-container {
+    flex-direction: column;
+  }
+  .gibbit-img {
+    width: 200px;
+    padding: 0px;
+    margin: 0 auto;
+  }
+  .registration-logo {
+    width: 120px;
+  }
+  .right-container {
+    width: 330px;
+  }
+  .left-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 30px;
+  }
+  .registration-head {
+    color: var(--brand-green-1);
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: -1.28px;
   }
 }
 
@@ -714,6 +939,35 @@ main {
   }
 }
 
+@media (max-width: 800px) {
+  .socialacc-container {
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 0;
+    align-items: center;
+    height: 100vh;
+  }
+  .gibbit-point {
+    display: none;
+  }
+  .right-scontainer {
+    padding-top: 0;
+  }
+  .continue-title {
+    width: 300px;
+    font-size: 42px;
+  }
+  .continue-subtitle {
+    width: 300px;
+    font-size: 14px;
+  }
+  .continue-button {
+    width: 300px;
+    height: 37px;
+    font-size: 14px;
+  }
+}
+
 /* ==========================
    Password Reset Forms
    ========================== */
@@ -736,6 +990,8 @@ main {
   font-size: 64px;
   font-weight: 700;
   line-height: 90%;
+
+  transition: all 0.3s ease;
 }
 
 .password-subtitle {
@@ -744,6 +1000,8 @@ main {
   font-size: 19px;
   font-weight: 400;
   line-height: 120%;
+
+  transition: all 0.3s ease;
 }
 
 .password-button {
@@ -763,6 +1021,8 @@ main {
 
   border: none;
   cursor: pointer;
+
+  transition: all 0.3s ease;
 }
 
 .password-button:hover {
@@ -781,6 +1041,23 @@ main {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+@media (max-width: 800px) {
+  .password-container {
+    padding-top: 250px;
+  }
+  .password-title {
+    width: 330px;
+    font-size: 48px;
+  }
+  .password-subtitle {
+    width: 330px;
+    font-size: 12px;
+  }
+  .password-button {
+    font-size: 12px;
+  }
 }
 
 /* ==========================
@@ -832,6 +1109,13 @@ main {
 
 .logout-btn:hover {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 800px) {
+  .logout-card {
+    padding-top: 300px;
+    width: 300px;
+  }
 }
 
 /* ==========================
@@ -1037,6 +1321,44 @@ main {
   resize: none;
 }
 
+@media (max-width: 800px) {
+  .profile-container {
+    padding-top: 150px;
+  }
+  .profile-form-title {
+    width: 300px;
+    font-size: 42px;
+  }
+  .profile-input {
+    width: 300px;
+  }
+  .profile-button {
+    width: 300px;
+  }
+  .upload-container {
+    flex-direction: column-reverse;
+    width: 300px;
+    gap: 10px;
+  }
+  .drop-zone {
+    width: 275px;
+    height: 125px;
+  }
+  .file-preview {
+    width: 100px;
+    height: 100px;
+  }
+  .upload-text.image {
+    text-align: center;
+  }
+  .profile-text-area {
+    width: 300px;
+  }
+  .field-label {
+    width: 300px;
+  }
+}
+
 /* ==========================
    Dashboard
    ========================== */
@@ -1052,7 +1374,7 @@ main {
 
 .sidebar {
   position: relative;
-  width: 200px;
+  width: 250px;
   height: 100%;
   min-height: 100vh;
   display: flex;
@@ -1095,6 +1417,12 @@ main {
   gap: 10px;
 }
 
+.menu-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .menu .title-bar {
   font-size: 12px;
   font-weight: 400;
@@ -1130,6 +1458,7 @@ main {
 
 .menu ul li .icon {
   font-size: 20px;
+  transition: all 0.3s ease;
 }
 
 .menu ul li .arrow {
@@ -1214,7 +1543,7 @@ main {
   justify-content: center;
 }
 
-.sidebar.active .menu > ul > li > a .text {
+.sidebar.active .menu > .menu-box > ul > li > a .text {
   display: none;
 }
 
@@ -1227,6 +1556,7 @@ main {
   padding: 10px 10px;
   background-color: var(--brand-white-1);
   box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
 }
 
 .dashboard-container {
@@ -1245,6 +1575,7 @@ main {
     'box-4 box-5 box-5 box-6';
   align-content: center;
   justify-content: center;
+  transition: all 0.3s;
 }
 
 .dashbox {
@@ -1265,17 +1596,85 @@ main {
   }
 }
 
-@media (max-width: 855px) {
+@media (max-width: 900px) {
   .dashboard-container {
     grid-template-columns: 350px;
-    grid-template-rows: 150px 250px 250px 250px 200px 250px;
+    grid-template-rows: 150px 250px 250px 250px 250px;
     grid-template-areas:
       'box-1'
-      'box-2'
-      'box-3'
       'box-6'
+      'box-3'
+      'box-2'
       'box-4'
       'box-5';
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-container {
+    grid-template-columns: 150px 200px;
+    grid-template-rows: 120px 170px 200px 220px 250px;
+    grid-template-areas:
+      'box-1 box-4'
+      'box-6 box-6'
+      'box-3 box-3'
+      'box-2 box-2'
+      'box-5 box-5';
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+  .sidebar-container {
+    height: max-content;
+    min-height: 0vh;
+  }
+  .sidebar {
+    width: 100%;
+    height: max-content;
+    min-height: 0vh;
+    flex-direction: row;
+    gap: 12px;
+    padding: 20px;
+    padding-bottom: 10px;
+  }
+  .sidebar .head {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0px;
+    padding-right: 20px;
+    border: none;
+    border-right: 2px solid var(--brand-white-3);
+    align-items: center;
+    justify-content: center;
+  }
+  .menu {
+    flex-direction: row;
+  }
+  .menu ul li a {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+  .menu ul li .icon {
+    font-size: 16px;
+  }
+  .menu .sub-menu {
+    display: none;
+    margin-left: 20px;
+    padding-left: 5px;
+    padding-top: 0;
+    border-left: 2px solid var(--brand-white-3);
+  }
+
+  .menu .sub-menu li a {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+  .menu-btn {
+    display: none;
   }
 }
 
@@ -1308,6 +1707,28 @@ main {
   transform: translateY(-4px);
 }
 
+@media (max-width: 600px) {
+  .dashbox.streak {
+    padding: 0 10px;
+  }
+  .dashbox.streak img {
+    height: 65px;
+    width: 65px;
+  }
+  .dashbox.streak .days {
+    color: var(--brand-green-2);
+    font-size: 32px;
+    transform: translateY(2px);
+  }
+
+  .dashbox.streak .streak-msg {
+    width: 60px;
+    color: var(--brand-green-3);
+    font-size: 12px;
+    transform: translateY(-2px);
+  }
+}
+
 .dashbox.bar-graph {
   display: flex;
   flex-direction: column;
@@ -1333,17 +1754,16 @@ main {
   height: 100%;
 }
 
+@media (max-width: 600px) {
+  .dashbox.bar-graph .chart-title {
+    font-size: 20px;
+  }
+}
+
 .dashbox.achievements {
   display: flex;
   padding: 10px;
   flex-direction: column;
-}
-
-@media (max-width: 855px) {
-  .dashbox.achievements {
-    flex-direction: row;
-    justify-content: space-around;
-  }
 }
 
 .dashbox.achievements .achievement-info img {
@@ -1398,17 +1818,61 @@ main {
   padding-top: 14px;
 }
 
+@media (max-width: 900px) {
+  .dashbox.achievements {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .achievement-grid {
+    gap: 10px;
+  }
+  .achievement-grid .trophy-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .achievement-trophies,
+  .display-trophy {
+    display: flex;
+    justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .dashbox.achievements .achievement-info .trophy-description {
+    width: 150px;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashbox.achievements .achievement-info img {
+    width: 50px;
+    height: 50px;
+  }
+  .dashbox.achievements .achievement-info .trophy-title {
+    font-size: 12px;
+  }
+  .dashbox.achievements .achievement-info .trophy-description {
+    font-size: 6px;
+  }
+  .achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .achievement-grid .trophy-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .dashbox.achievements .achievement-info .trophy-description {
+    width: 80px;
+  }
+}
+
 .dashbox.daily-accomplishments {
   display: flex;
   flex-direction: column;
   gap: 8px;
   justify-content: center;
-}
-
-@media (max-width: 885px) {
-  .achievement-trophies {
-    padding: 10px 0;
-  }
 }
 
 .title-contrib {
@@ -1489,6 +1953,28 @@ main {
   z-index: 1000;
 }
 
+@media (max-width: 600px) {
+  .heatmap-grid {
+    display: grid;
+    grid-template-rows: repeat(7, 14px);
+    grid-auto-flow: column;
+    grid-auto-columns: 14px;
+    gap: 4px;
+  }
+  .heatmap-cell {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+  }
+  .day-labels {
+    gap: 4px;
+    font-size: 14px;
+  }
+  .title-contrib {
+    font-size: 16px;
+  }
+}
+
 .dashbox.warning {
   display: flex;
   flex-direction: column;
@@ -1537,6 +2023,16 @@ main {
   color: var(--brand-grey-3);
   font-weight: 400;
   letter-spacing: -0.28px;
+}
+
+@media (max-width: 600px) {
+  .dashbox.warning img {
+    width: 75px;
+  }
+  .dashbox.warning .habit-cards {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
 }
 
 .dashbox.best-performing {
@@ -1610,6 +2106,16 @@ main {
 
 .habit-status.completed p {
   color: var(--brand-green-3);
+}
+
+@media (max-width: 600px) {
+  .dashbox.best-performing .habit-cards {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  .habit-status {
+    font-size: 12px;
+  }
 }
 
 /* ==========================
@@ -2096,6 +2602,21 @@ main {
   }
 }
 
+@media (max-width: 750px) {
+  .habit-form-container {
+    padding-top: 40px;
+  }
+  .habit-form-box {
+    width: 320px;
+    background-color: var(--brand-white-2);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .habit-goal-field {
+    width: 100%;
+  }
+}
+
 /* ==========================
    Habit list
    ========================== */
@@ -2254,6 +2775,28 @@ main {
 .misc-actions {
   display: flex;
   gap: 4px;
+}
+
+@media (max-width: 750px) {
+  .list-container {
+    padding-top: 40px;
+    height: 600px;
+    align-items: start;
+  }
+  .list-box {
+    height: 600px;
+    width: 350px;
+    grid-template-columns: 330px;
+  }
+  .habit-card {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    background-color: var(--brand-white-1);
+    border-radius: 7px;
+    padding: 20px;
+    border-bottom: 6px solid var(--habit-color);
+  }
 }
 
 /* ==========================
