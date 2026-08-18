@@ -1424,12 +1424,16 @@ body.transitioning {
 
 .container {
   display: flex;
-  min-height: 100vh;
+}
+
+@media (max-width: 700px) {
+  .container {
+    min-height: 100vh;
+  }
 }
 
 .sidebar-container {
   flex: 0 0 auto;
-  min-height: 100vh;
 }
 
 .sidebar {
