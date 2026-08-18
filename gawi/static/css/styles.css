@@ -128,6 +128,7 @@ html.dark {
   --chart-grid-color: #383838;
 }
 
+html.dark,
 html.dark .container,
 html.dark .list-container,
 html.dark .habit-form-container,
@@ -1424,12 +1425,6 @@ body.transitioning {
 
 .container {
   display: flex;
-}
-
-@media (max-width: 700px) {
-  .container {
-    min-height: 100vh;
-  }
 }
 
 .sidebar-container {
