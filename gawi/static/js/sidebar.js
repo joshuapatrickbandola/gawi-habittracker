@@ -15,3 +15,16 @@ $('.menu-btn').click(function () {
     $('.sidebar').toggleClass('collapsed');
   }, 300);
 });
+
+$(function () {
+  $('.mode-btn').click(function () {
+    $('html').toggleClass('transitioning');
+
+    setTimeout(() => {
+      $('html').toggleClass('dark');
+      localStorage.setItem('theme', $('html').hasClass('dark') ? 'dark' : 'light');
+      updateChartTheme();
+      $('html').removeClass('transitioning');
+    }, 150);
+  });
+});

@@ -119,7 +119,64 @@ main {
   --brand-grey-4: #494949;
   --brand-red: #d33d3d;
   --background: linear-gradient(180deg, #fdfdfd 0%, #f3f3f3 48.56%);
+  --chart-axis-color: #E5E5E5;
+  --chart-grid-color: #E5E5E5;
 }
+
+html.dark {
+  --chart-axis-color: #383838;
+  --chart-grid-color: #383838;
+}
+
+html.dark .container,
+html.dark .list-container,
+html.dark .habit-form-container,
+html.dark .profile-view-container,
+html.dark .profile-edit-supercontainer {
+  --brand-white-1: #1c1c1e;
+  --brand-white-2: #242426;
+  --brand-white-3: #2e2e30;
+  --brand-white-4: #141416;
+
+  --brand-grey: #5a5a5c;
+  --brand-grey-2: #8e8e90;
+  --brand-grey-3: #b8b8ba;
+  --brand-grey-4: #f0f0f0;
+
+  --brand-green-1: #7be495;
+  --brand-green-2: #4caf7d;
+  --brand-green-3: #3d8c63;
+  --brand-green-4: #2a5f43;
+
+  --brand-red: #ff6b6b;
+
+  background-color: var(--brand-white-4);
+}
+
+.container,
+.list-container,
+.habit-form-container,
+.profile-view-container,
+.profile-edit-supercontainer,
+.sidebar,
+.dashbox,
+.habit-form-box,
+.list-box,
+.habit-card,
+.profile-header-card,
+.profile-stat-card,
+.habit-goal-card,
+.emoji-popup,
+.custom-select-options {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body.transitioning {
+  transition: opacity 0.15s ease;
+  opacity: 0.85;
+}
+
+
 
 /* ==========================
    Home Page
@@ -1207,6 +1264,7 @@ main {
   color: var(--brand-green-1);
   border-color: var(--brand-grey);
   font-weight: 300;
+  background-color: transparent;
 }
 
 .profile-button {
@@ -1319,9 +1377,10 @@ main {
   border-radius: 14px;
   border-color: var(--brand-grey);
   resize: none;
+  background-color: transparent;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
   .profile-container {
     padding-top: 150px;
   }
@@ -1365,6 +1424,7 @@ main {
 
 .container {
   display: flex;
+  min-height: 100vh;
 }
 
 .sidebar-container {
@@ -1415,6 +1475,34 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.mode-btn {
+  display: flex;
+  justify-content: right;
+  cursor: pointer;
+}
+
+.mode-btn .icon {
+  font-size: 20px;
+  color: var(--brand-grey-2);
+  transition: all 0.3s;
+}
+
+.mode-btn .icon:hover {
+  transform: scale(1.1);
+}
+
+.mode-btn .ph-sun {
+  display: none;
+}
+
+html.dark .mode-btn .ph-moon {
+  display: none;
+}
+
+html.dark .mode-btn .ph-sun {
+  display: inline-block;
 }
 
 .menu-box {
@@ -1611,6 +1699,9 @@ main {
 }
 
 @media (max-width: 600px) {
+  .menu {
+    align-items: center;
+  }
   .dashboard-container {
     grid-template-columns: 150px 200px;
     grid-template-rows: 120px 170px 200px 220px 250px;
@@ -1999,6 +2090,14 @@ main {
   overflow-x: hidden;
 }
 
+.dashbox.warning .habit-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.dashbox.warning .habit-list::-webkit-scrollbar-thumb {
+  background: var(--brand-grey);
+}
+
 .dashbox.warning .habit-list p {
   color: var(--brand-grey-3);
   text-align: center;
@@ -2060,6 +2159,15 @@ main {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.dashbox.best-performing .habit-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.dashbox.best-performing .habit-list::-webkit-scrollbar-thumb {
+  background: var(--brand-grey);
+  border-radius: 2px;
 }
 
 .dashbox.best-performing .habit-cards {
@@ -2147,6 +2255,7 @@ main {
   display: none;
 }
 
+
 .custom-emoji-wrapper {
   position: relative;
 }
@@ -2204,12 +2313,41 @@ main {
 }
 
 .switch input[type='checkbox'] {
-  accent-color: var(--brand-green-2);
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 2px solid var(--brand-grey-2);
+  border-radius: 4px;
+  cursor: pointer;
+
+  position: relative;
+}
+
+.switch input[type='checkbox']:checked {
+  background-color: var(--brand-grey-2);
+}
+
+.switch input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+
+  width: 5px;
+  height: 9px;
+
+  border: solid white;
+  border-width: 0 2px 2px 0;
+
+  transform: rotate(45deg);
+
+  top: 0px;
+  left: 4px;
 }
 
 .switch p {
   color: var(--brand-grey-2);
   font-size: 12px;
+  transform: translateY(3px);
 }
 
 .icon-name-habit {
@@ -2229,6 +2367,10 @@ main {
 
 .custom-emoji-wrapper input:focus {
   outline: none;
+}
+
+.habit-name-form {
+  width: 100%;
 }
 
 .habit-name-form .habit-name-field {
@@ -2571,6 +2713,8 @@ main {
   padding: 4px;
   cursor: pointer;
   border-radius: 14px;
+  color: var(--brand-white-1);
+  background-color: var(--brand-green-3);
 }
 
 .habit-form-done:hover {
@@ -2632,7 +2776,7 @@ main {
 .list-box {
   background-color: var(--brand-white-2);
   height: 600px;
-  width: 980px;
+  width: 990px;
   border-radius: 14px;
   margin: 0 auto;
   display: grid;
@@ -2641,6 +2785,20 @@ main {
   gap: 10px;
   overflow-y: auto;
   padding: 10px;
+}
+
+.list-box::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.list-box::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.list-box::-webkit-scrollbar-thumb {
+  background: var(--brand-white-1);
+  border-radius: 4px;
 }
 
 .habit-card {
@@ -2656,7 +2814,7 @@ main {
 @media (max-width: 1270px) {
   .list-box {
     height: 800px;
-    width: 495px;
+    width: 505px;
     grid-template-columns: 475px;
   }
 }
@@ -2715,6 +2873,15 @@ main {
   color: var(--brand-grey-2);
 }
 
+@media (max-width: 700px) {
+  .name-checkbox p {
+    font-size: 28px;
+  }
+  .category-name p {
+    font-size: 14px;
+  }
+}
+
 .color-bar {
   background-color: var(--habit-color);
   width: 100%;
@@ -2725,6 +2892,19 @@ main {
   display: flex;
   gap: 3px;
   overflow-x: auto;
+}
+
+.tracker-grid::-webkit-scrollbar {
+  height: 5px;
+}
+
+.tracker-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tracker-grid::-webkit-scrollbar-thumb {
+  background: var(--habit-color);
+  border-radius: 2px;
 }
 
 .tracker-week {
@@ -2756,6 +2936,7 @@ main {
   border: none;
   color: var(--brand-grey-2);
   cursor: pointer;
+  background-color: transparent;
 }
 
 .habit-delete-btn .icon {
@@ -2785,7 +2966,7 @@ main {
   }
   .list-box {
     height: 600px;
-    width: 350px;
+    width: 360px;
     grid-template-columns: 330px;
   }
   .habit-card {
@@ -2956,7 +3137,9 @@ main {
 .profile-edit-supercontainer {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: 0 auto;
+  flex: 1;
 }
 
 .upload-container-edit {
@@ -2995,7 +3178,7 @@ main {
   padding-top: 16px;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 850px) {
   .profile-edit-supercontainer {
     padding: 20px 0;
   }

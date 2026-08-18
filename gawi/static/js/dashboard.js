@@ -2,15 +2,25 @@
    Dashboard - Bar Graph
    ================================== */
 
+let weeklyChart;
+
 document.addEventListener('DOMContentLoaded', () => {
   const weeklyData = JSON.parse(document.getElementById('weekly-data').textContent);
   const habitCount = JSON.parse(document.getElementById('habit-count').textContent);
+
+  const axisColor = getComputedStyle(document.documentElement)
+    .getPropertyValue('--chart-axis-color')
+    .trim();
+
+  const gridColor = getComputedStyle(document.documentElement)
+    .getPropertyValue('--chart-grid-color')
+    .trim();
 
   const labels = weeklyData.map((day) => day.day.slice(0, 3));
   const values = weeklyData.map((day) => day.completed);
 
   const ctx = document.getElementById('weeklyChart');
-  new Chart(ctx, {
+  weeklyChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: labels,
@@ -80,6 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           grid: {
             drawBorder: false,
+            color: gridColor,
+          },
+          border: {
+            color: axisColor,
           },
         },
         y: {
@@ -92,11 +106,34 @@ document.addEventListener('DOMContentLoaded', () => {
           grid: {
             display: false,
           },
+          border: {
+            color: axisColor,
+          },
         },
       },
     },
   });
 });
+
+function updateChartTheme() {
+  if (!weeklyChart) return;
+
+  const axisColor = getComputedStyle(document.documentElement)
+    .getPropertyValue('--chart-axis-color')
+    .trim();
+
+  const gridColor = getComputedStyle(document.documentElement)
+    .getPropertyValue('--chart-grid-color')
+    .trim();
+
+  weeklyChart.options.scales.x.border.color = axisColor;
+  weeklyChart.options.scales.y.border.color = axisColor;
+
+  weeklyChart.options.scales.x.grid.color = gridColor;
+  weeklyChart.options.scales.y.grid.color = gridColor;
+
+  weeklyChart.update();
+}
 
 /* ==================================
    Dashboard - Heatmap Tooltip
