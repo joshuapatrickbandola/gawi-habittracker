@@ -96,13 +96,15 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             ).values_list("date", flat=True)
         )
 
+        today = timezone.localtime(timezone.now()).date()
+        day = today
+
+        if day not in dates:
+            day -= timedelta(days=1)
+
         streak = 0
-
-        day = timezone.localtime(timezone.now()).date()
-
         while day in dates:
             streak += 1
-
             day -= timedelta(days=1)
 
         return streak
