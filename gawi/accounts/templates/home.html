@@ -3,7 +3,8 @@
 
 {% block main %}
 <div class="logo-buttons-container">
-  <img src="{% static 'img/full-logo.png' %}" alt="Gawi Logo" class="logo" />
+  <img src="{% static 'img/full-logo-dark.png' %}" alt="Gawi Logo" class="logo logo-dark" />
+  <img src="{% static 'img/full-logo-light.png' %}" alt="Gawi Logo" class="logo logo-light" />
   <div class="home-register-buttons">
     {% if user.is_authenticated %}
     <a href="{% url 'habittracker:dashboard' request.user.username %}">

@@ -6,14 +6,16 @@
 <div class="registration-container">
   <div class="left-container">
     <a href="/">
-      <img src="{% static 'img/back-arrow.png' %}" alt="Back" />
+      <img src="{% static 'img/back-arrow-dark.png' %}" alt="Back" class="back back-dark" />
+      <img src="{% static 'img/back-arrow-light.png' %}" alt="Back" class="back back-light" />
     </a>
     <div class="gibbit-img">
       <img src="{% static 'img/gibbit-wave.png' %}" alt="Gibbit Wave" class="gibbit-img" />
     </div>
   </div>
   <div class="right-container">
-    <img src="{% static 'img/full-logo.png' %}" alt="Gawi Logo" class="registration-logo" />
+    <img src="{% static 'img/full-logo-dark.png' %}" alt="Gawi Logo" class="registration-logo logo-dark" />
+    <img src="{% static 'img/full-logo-light.png' %}" alt="Gawi Logo" class="registration-logo logo-light" />
     <p class="registration-head">Login</p>
     <form method="post" class="input-fields">
       {% csrf_token %} {{ form.non_field_errors }}
@@ -30,8 +32,8 @@
 
       <div class="login-addtl">
         <div class="login-checkbox">
-          {{ form.remember }}
-          <label class="login-label"> Remember me </label>
+          <p>{{ form.remember }}</p>
+          <p class="login-label"> Remember me </p>
         </div>
         <a href="{% url 'account_reset_password' %}" class="green-link"> Forgot password? </a>
       </div>

@@ -277,6 +277,16 @@ body.transitioning {
   border-radius: 14px;
 }
 
+.logo-light {
+  display: none;
+}
+html.dark .logo-dark {
+  display: none;
+}
+html.dark .logo-light {
+  display: block;
+}
+
 @media (max-width: 600px) {
   .logo-buttons-container {
     padding: 40px 30px;
@@ -456,7 +466,7 @@ body.transitioning {
 }
 
 .title {
-  color: var(--brand-white-1);
+  color: #efefef;
   font-size: 64px;
   font-weight: 700;
   line-height: 90%;
@@ -469,7 +479,7 @@ body.transitioning {
 .subtitle {
   display: flex;
   width: 865px;
-  color: var(--brand-white-1);
+  color: #efefef;
   font-size: 24px;
   font-weight: 300;
   line-height: 120%;
@@ -512,7 +522,7 @@ body.transitioning {
 }
 
 .feature-subtext {
-  color: var(--brand-white-1);
+  color: #efefef;
   font-size: 20px;
   font-weight: 300;
   line-height: 120%;
@@ -522,7 +532,7 @@ body.transitioning {
 }
 
 .feature-subtext-exp {
-  color: var(--brand-white-1);
+  color: #efefef;
   font-size: 20px;
   font-weight: 300;
   line-height: 120%;
@@ -687,6 +697,18 @@ body.transitioning {
    Login and Signup Page
    ========================== */
 
+.back-light{
+  display: none;
+}
+
+html.dark .back-dark{
+  display: none;
+}
+
+html.dark .back-light{
+  display: block;
+}
+
 .registration-container {
   padding: 0 40px;
   padding-top: 150px;
@@ -754,7 +776,7 @@ body.transitioning {
 }
 
 .password-rem {
-  color: #3b3b3b;
+  color: var(--brand-grey-4);
   font-size: 12px;
   font-weight: 400;
   letter-spacing: -0.24px;
@@ -768,8 +790,47 @@ body.transitioning {
   justify-content: space-between;
 }
 
+.login-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .login-checkbox input[type='checkbox'] {
-  accent-color: var(--brand-green-1);
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 2px solid var(--brand-green-1);
+  border-radius: 4px;
+  cursor: pointer;
+
+  position: relative;
+}
+
+.login-checkbox input[type='checkbox']:checked {
+  background-color: var(--brand-green-1);
+}
+
+.login-checkbox input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+
+  width: 5px;
+  height: 9px;
+
+  border: solid white;
+  border-width: 0 2px 2px 0;
+
+  transform: rotate(45deg);
+
+  top: 0px;
+  left: 4px;
+}
+
+.login-checkbox .login-label {
+  color: var(--brand-green-1);
+  transform: translateY(-2px);
 }
 
 .green-link {
@@ -835,7 +896,7 @@ body.transitioning {
   border-radius: 14px;
   width: 195px;
   height: 37px;
-  background-color: #fbfbfb;
+  background-color: var(--brand-white-2);
   padding: 0 10px;
 }
 
@@ -849,6 +910,7 @@ body.transitioning {
 }
 
 .misc {
+  color: var(--brand-green-1);
   text-align: center;
   font-size: 14px;
   font-weight: 300;
@@ -1220,7 +1282,7 @@ body.transitioning {
   left: 0;
   width: 100%;
   height: 7px;
-  background: #9fcb98;
+  background: var(--brand-green-4);
   border-radius: 999px;
   z-index: 1;
 }
@@ -1256,7 +1318,7 @@ body.transitioning {
 }
 
 .profile-input {
-  width: 580px;
+  width: 100%;
   height: 37px;
   border-radius: 14px;
   border-style: solid;
