@@ -222,3 +222,7 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# Cron Scheduling
+
+CRON_SECRET_TOKEN = os.getenv("CRON_SECRET_TOKEN")
