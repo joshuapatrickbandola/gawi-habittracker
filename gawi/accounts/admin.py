@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from .models import Profile
+from .models import Profile, PushSubscription
+
+admin.site.register(PushSubscription)
 
 
 @admin.register(Profile)
