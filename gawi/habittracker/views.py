@@ -493,3 +493,19 @@ class HabitDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
+
+
+import io
+
+from django.core.management import call_command
+from django.http import HttpResponse, HttpResponseForbidden
+
+
+def trigger_due_notifications(request):
+    token = request.GET.get("token")
+    if token != settings.CRON_SECRET_TOKEN:
+        return HttpResponseForbidden("Invalid token")
+
+    output = io.StringIO()
+    call_command("send_due_notifications", stdout=output)
+    return HttpResponse(output.getvalue(), content_type="text/plain")

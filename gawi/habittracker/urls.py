@@ -23,4 +23,9 @@ urlpatterns = [
         views.HabitDeleteView.as_view(),
         name="habit_delete",
     ),
+    path(
+        "tasks/send-due-notifications/",
+        views.trigger_due_notifications,
+        name="send_due_notifications",
+    ),
 ]
